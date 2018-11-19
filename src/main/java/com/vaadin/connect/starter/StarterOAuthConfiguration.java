@@ -15,16 +15,15 @@
  */
 package com.vaadin.connect.starter;
 
-import org.springframework.boot.CommandLineRunner;
+import javax.annotation.PostConstruct;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.vaadin.connect.starter.account.Account;
-import com.vaadin.connect.starter.account.AccountRepository;
 
 /**
  * The Spring Boot configuration for authentication part of the Vaadin Connect based application.
@@ -35,33 +34,40 @@ public class StarterOAuthConfiguration {
     private static final String TEST_LOGIN = "test_login";
     private static final String TEST_PASSWORD = "test_password";
 
-    /**
-     * Defines a service for looking up the account data using the repository specified.
-     *
-     * @param accountRepository the repository to look for accounts
-     * @return the service for searching for the account data
-     */
-    @Bean
-    public UserDetailsService userDetailsService(AccountRepository accountRepository) {
-        return username -> accountRepository.findByUsername(username)
-                .map(account -> User.builder().username(account.getUsername())
-                        .password(account.getPassword()).roles("USER").build())
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+    private UserDetails testUser;
+    private final PasswordEncoder encoder;
+
+    public StarterOAuthConfiguration(PasswordEncoder encoder) {
+        this.encoder = encoder;
     }
 
     /**
-     * Prefills the account repository with test account data for testing purposes.
-     * Should be removed when a real application is developed.
+     * Creates a user account for demo purpose.
+     */
+    @PostConstruct
+    public void createTestUserAccount() {
+        testUser = User.builder()
+                .username(TEST_LOGIN)
+                .password(encoder.encode(TEST_PASSWORD))
+                .roles("USER")
+                .build();
+    }
+
+    /**
+     * Defines a service for looking up the account data using the repository specified.
+     * <p>
+     * Currently provides a single hardcoded test user account, should be replaced with proper
+     * approach before pushing the app into the production.
      *
-     * @param accountRepository the repository to store the data into
-     * @param encoder           the encoder to use for
-     * @return a generic runner interface
+     * @return the service for searching for the account data
      */
     @Bean
-    public CommandLineRunner init(
-            AccountRepository accountRepository,
-            PasswordEncoder encoder) {
-        return args -> accountRepository
-                .save(new Account(TEST_LOGIN, encoder.encode(TEST_PASSWORD)));
+    public UserDetailsService userDetailsService() {
+        return username -> {
+            if (testUser.getUsername().equals(username)) {
+                return testUser;
+            }
+            throw new UsernameNotFoundException(username);
+        };
     }
 }
