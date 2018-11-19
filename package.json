@@ -1,0 +1,17 @@
+{
+  "name": "base-starter-connect",
+  "version": "0.0.1",
+  "description": "Vaadin Connect starter project",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vaadin/base-starter-connect.git"
+  },
+  "keywords": [
+    "Vaadin",
+    "Connect",
+    "Starter",
+    "Base"
+  ],
+  "author": "Vaadin Ltd",
+  "license": "Apache-2.0",
+}
