@@ -6,6 +6,7 @@ The project contains the required dependencies and basic set up that you can exp
 To access it directly from github, clone the repository and import the project to the IDE of your choice as a Maven project. You need to have Java 8 or newer installed.
 
 Run using `./mvnw spring-boot:run` in the root of the project if you don't have Maven installed or `mvn spring-boot:run` if you do.
+To run unit tests, use `./mvnw test` or `mvn test` respectively.
 
 Currently the project is still in a work in progress state, so a `curl` commands need to be used in order to get a GreeterService response.
 
