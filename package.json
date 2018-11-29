@@ -12,6 +12,16 @@
     "Starter",
     "Base"
   ],
+  "scripts": {
+    "start": "node scripts/start/backend.js -- node scripts/start/frontend.js",
+    "start:backend": "node scripts/start/backend.js",
+    "start:frontend": "node scripts/start/frontend.js"
+  },
+  "devDependencies": {
+    "polyserve": "^0.27.13",
+    "express": "^4.16.4",
+    "http-proxy-middleware": "^0.19.0"
+  },
   "author": "Vaadin Ltd",
-  "license": "Apache-2.0",
+  "license": "Apache-2.0"
 }
