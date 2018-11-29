@@ -17,6 +17,10 @@
     "start:backend": "node scripts/start/backend.js",
     "start:frontend": "node scripts/start/frontend.js"
   },
+  "dependencies": {
+    "@vaadin/vaadin-text-field": "2.1.4",
+    "@vaadin/vaadin-button": "2.1.0"
+  },
   "devDependencies": {
     "polyserve": "^0.27.13",
     "express": "^4.16.4",
