@@ -18,7 +18,7 @@ const [chainedExecutable, ...chainedArgs] = endOfOptionsIndex > -1
 if (chainedExecutable) {
   process.exit(
     spawnSync(
-      'mvn',
+      './mvnw',
       [
         'spring-boot:start',
         'exec:exec',
@@ -31,7 +31,7 @@ if (chainedExecutable) {
 } else {
   process.exit(
     spawnSync(
-      'mvn',
+      './mvnw',
       ['spring-boot:run'],
       {stdio: 'inherit', shell: true}
     ).status
