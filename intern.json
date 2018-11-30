@@ -1,0 +1,17 @@
+{
+  "suites": "frontend/test/**/*.spec.js",
+  "environments": [
+    "node"
+  ],
+  "browser": {
+    "loader": {
+      "script": "esm"
+    }
+  },
+  "node": {
+    "plugins": [ "@babel/register"]
+  },
+  "instrumenterOptions": {
+    "esModules": true
+  }
+}
