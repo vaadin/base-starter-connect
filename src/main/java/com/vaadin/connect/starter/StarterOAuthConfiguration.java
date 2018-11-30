@@ -15,8 +15,6 @@
  */
 package com.vaadin.connect.starter;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.User;
@@ -34,19 +32,14 @@ public class StarterOAuthConfiguration {
     private static final String TEST_LOGIN = "test_login";
     private static final String TEST_PASSWORD = "test_password";
 
-    private UserDetails testUser;
     private final PasswordEncoder encoder;
 
     public StarterOAuthConfiguration(PasswordEncoder encoder) {
         this.encoder = encoder;
     }
 
-    /**
-     * Creates a user account for demo purpose.
-     */
-    @PostConstruct
-    public void createTestUserAccount() {
-        testUser = User.builder()
+    private UserDetails createTestUserDetails() {
+        return User.builder()
                 .username(TEST_LOGIN)
                 .password(encoder.encode(TEST_PASSWORD))
                 .roles("USER")
@@ -64,8 +57,8 @@ public class StarterOAuthConfiguration {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            if (testUser.getUsername().equals(username)) {
-                return testUser;
+            if (TEST_LOGIN.equals(username)) {
+                return createTestUserDetails();
             }
             throw new UsernameNotFoundException(username);
         };
