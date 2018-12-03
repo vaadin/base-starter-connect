@@ -25,6 +25,12 @@
                 https://oss.sonatype.org/content/repositories/vaadin-snapshots/
             </url>
         </repository>
+        <repository>
+            <id>vaadin-prereleases</id>
+            <url>
+                http://maven.vaadin.com/vaadin-prereleases
+            </url>
+        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -32,6 +38,12 @@
             <id>vaadin-snapshots</id>
             <url>
                 https://oss.sonatype.org/content/repositories/vaadin-snapshots/
+            </url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>vaadin-prereleases</id>
+            <url>
+                http://maven.vaadin.com/vaadin-prereleases
             </url>
         </pluginRepository>
     </pluginRepositories>
