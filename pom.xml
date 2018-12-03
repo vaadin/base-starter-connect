@@ -26,7 +26,7 @@
             </url>
         </repository>
         <repository>
-            <id>vaadin-prerelease</id>
+            <id>vaadin-prereleases</id>
             <url>
                 http://maven.vaadin.com/vaadin-prereleases
             </url>
@@ -41,7 +41,7 @@
             </url>
         </pluginRepository>
         <pluginRepository>
-            <id>vaadin-prerelease</id>
+            <id>vaadin-prereleases</id>
             <url>
                 http://maven.vaadin.com/vaadin-prereleases
             </url>
