@@ -1,6 +1,6 @@
 {
   "name": "base-starter-connect",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "Vaadin Connect starter project",
   "repository": {
     "type": "git",
@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "@vaadin/vaadin-text-field": "2.1.4",
-    "@vaadin/vaadin-button": "2.1.0"
+    "@vaadin/vaadin-button": "2.1.0",
+    "@vaadin/connect": "0.1.1"
   },
   "devDependencies": {
     "polyserve": "^0.27.13",
