@@ -1,5 +1,4 @@
 {
-  "suites": "frontend/test/**/*.spec.js",
   "functionalSuites": "e2e/**/*.spec.js",
   "serverUrl": "http://localhost:8081",
   "environments": [
@@ -8,16 +7,16 @@
       "fixSessionCapabilities": false
     }
   ],
-  "environments": [
-    "node"
-  ],
   "browser": {
     "loader": {
       "script": "esm"
     }
   },
   "node": {
-    "plugins": ["@babel/register"]
+    "suites": "frontend/test/**/*.spec.js",
+    "plugins": [
+      "./frontend/test/utils.js"
+    ]
   },
   "instrumenterOptions": {
     "esModules": true

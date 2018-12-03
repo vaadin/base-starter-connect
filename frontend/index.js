@@ -1,18 +1,58 @@
 import '@vaadin/vaadin-text-field/vaadin-text-field';
 import '@vaadin/vaadin-button/vaadin-button';
-import client from './src/generated/connect-client.default';
-import {greet} from './src/generated/GreeterService';
 
+import client from './src/generated/connect-client.default.js';
 client.credentials = (options = {}) => {
   return {username: 'test_login', password: 'test_password'};
 };
 
-const greeting = document.getElementById("greeting");
-const nameInput = document.getElementById("nameInput");
-document.getElementById("greet").onclick = async () => {
-  if (!nameInput.value) {
-    greeting.textContent = "Enter a name first!";
-  } else {
-    greeting.textContent = await greet(nameInput.value);
+import {GreeterController} from './src/greeter-controller.js';
+
+/**
+ * Maps the view properties to the DOM.
+ */
+class GreeterView {
+  /**
+   * @param {Node} rootNode the DOM root of the greeter view
+   */
+  constructor(rootNode = document) {
+    this.$greeting = rootNode.getElementById('greeting');
+    this.$nameInput = rootNode.getElementById('nameInput');
+    this.$greetButton = rootNode.getElementById('greet');
   }
-};
+
+  /**
+   * @type {string}
+   */
+  get name() {
+    return this.$nameInput.value;
+  }
+
+  set name(value) {
+    this.$nameInput.value = value;
+  }
+
+  /**
+   * @type {string}
+   */
+  get greeting() {
+    return this.$greeting.textContent;
+  }
+
+  set greeting(value) {
+    this.$greeting.textContent = value;
+  }
+
+  /**
+   * @type {Function}
+   */
+  get onGreet() {
+    return this.$greetButton.onclick;
+  }
+
+  set onGreet(fn) {
+    this.$greetButton.onclick = fn;
+  }
+}
+
+new GreeterController(new GreeterView());

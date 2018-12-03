@@ -21,7 +21,23 @@ Backend part can be also started as any Java application, via Maven: `./mvnw spr
 
 ## Unit Tests
 
-To run a backend unit tests, use `./mvnw test` or `mvn test` respectively.
+To run backend unit tests, use `./mvnw test` or `mvn test` respectively.
+
+To run frontend unit tests, use `npm run test:unit`.
+
+Note that it is important to make the logic of every unit tested on its own,
+without involving other dependencies in unit testing, such as the backend,
+browser APIs, and so on. To follow that principle, the frontend unit tests
+are running in a Node.js environment, and are using stubs instead of the actual
+Vaadin Connect client methods. The frontend tests command does start neither
+the backend nor the frontend application servers.
+
+Normally, a frontend application framework provides abstractions over
+the browser APIs, and defines conventions on how to structure the application
+to isolate the logic in separately testable units. However, this project aims
+to be agnostic to particular frontend frameworks. Instead, the view wrapper
+classes are used to keep the frontend logic in the controllers free of using
+the browser APIs.
 
 ## Integration Tests
 
