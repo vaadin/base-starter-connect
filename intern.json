@@ -8,9 +8,9 @@
       "script": "esm"
     }
   },
-  "node": {
-    "plugins": [ "@babel/register"]
-  },
+  "plugins": [
+    "./frontend/test/utils.js"
+  ],
   "instrumenterOptions": {
     "esModules": true
   }
