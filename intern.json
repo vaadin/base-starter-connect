@@ -1,0 +1,10 @@
+{
+  "functionalSuites": "e2e/**/*.spec.js",
+  "serverUrl": "http://localhost:8081",
+  "environments": [
+    {
+      "browserName": "chrome",
+      "fixSessionCapabilities": false
+    }
+  ]
+}
