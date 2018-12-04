@@ -6,5 +6,19 @@
       "browserName": "chrome",
       "fixSessionCapabilities": false
     }
-  ]
+  ],
+  "browser": {
+    "loader": {
+      "script": "esm"
+    }
+  },
+  "node": {
+    "suites": "frontend/test/**/*.spec.js",
+    "plugins": [
+      "./frontend/test/utils.js"
+    ]
+  },
+  "instrumenterOptions": {
+    "esModules": true
+  }
 }
