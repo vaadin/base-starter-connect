@@ -28,6 +28,7 @@ if (chainedExecutable) {
       [
         hasFilesWithExtension('./target', '.jar') ? 'generate-resources' : 'package -DskipTests',
         'spring-boot:start',
+        '-Dspring-boot.run.fork',
         'exec:exec',
         `-Dexec.executable="${chainedExecutable}"`,
         `-Dexec.args="${chainedArgs.join(' ')}"`
