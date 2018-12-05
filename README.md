@@ -19,6 +19,11 @@ Then navigate to `http://localhost:8081` to see the UI, the backend part starts 
 You can launch both backend and frontend separately, use `npm run start:backend` or `npm run start:frontend` correspondingly.
 Backend part can be also started as any Java application, via Maven: `./mvnw spring-boot:run` in the root of the project if you don't have Maven installed or `mvn spring-boot:run` if you do.
 
+Both backend and frontend servers listen to changes in order to live reload modifications to the project.
+For the frontend, change files under the `frontend` folder and reload the browser.
+For the backend, change any Java file under `src/main` folder and compile it, then server will restart.
+Note that if you edit your Java files using an IDE, changed files should be automatically compiled.
+
 ## Unit Tests
 
 To run backend unit tests, use `./mvnw test` or `mvn test`.
