@@ -41,7 +41,9 @@ the browser APIs.
 
 ## Integration Tests
 
-We provide an integration test placed in the `e2e` folder that you can run by executing `npm test`.
+We provide an integration test placed in the `e2e` folder that you can run by executing `npm test`, or
+if you prefer the Java way, execute `./mvnw verify` or `mvn verify` if you already have Maven installed.
 
 The script starts the backend Java server, the Node.js frontend server, and finally it runs [`intern`](https://theintern.io/) a JavaScript testing system able to open the application in a browser and interact with it.
-The test uses [Leadfoot](https://theintern.io/leadfoot/index.html) for driving actions in the browser, and [Chai](https://www.chaijs.com/) for making the assertions.
+The test uses [Leadfoot](https://theintern.io/leadfoot/index.html) for driving actions in the browser,
+and [Chai](https://www.chaijs.com/) for making the assertions.
