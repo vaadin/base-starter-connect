@@ -114,9 +114,9 @@
                         <goals>
                             <!--Generates Open Api v3 spec, happens on process-sources phase by default-->
                             <goal>generate-openapi-spec</goal>
-                            <!--generates the default Vaadin Connect client for sending requests to Vaadin Connect services, happens on generate-resources phase by default-->
+                            <!--Generates the default Vaadin Connect client for sending requests to Vaadin Connect services, happens on generate-resources phase by default-->
                             <goal>generate-vaadin-client</goal>
-                            <!--Generate Vaadin Connect services' modules to ease their method access, happens on generate-resources phase by default-->
+                            <!--Generates Vaadin Connect services' modules to ease their method access, happens on generate-resources phase by default-->
                             <goal>generate-connect-modules</goal>
                         </goals>
                     </execution>
