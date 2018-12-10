@@ -21,8 +21,11 @@ Backend part can be also started as any Java application, via Maven: `./mvnw spr
 
 Both backend and frontend servers listen to changes in order to live reload modifications to the project.
 For the frontend, change files under the `frontend` folder and reload the browser.
-For the backend, change any Java file under `src/main` folder and compile it, then server will restart.
-Note that if you edit your Java files using an IDE, changed files should be automatically compiled.
+For the backend, change any Java file under `src/main/java` folder and save the changes — Java files will be recompiled, Vaadin Connect resources regenerated and the
+Spring Boot server will be restarted.
+
+On a backend side the changes are applied via the `fizzed-watcher-maven-plugin` that is automatically started via `npm start` or `npm run start:backend`.
+If you start the project via Maven, run  `./mvnw fizzed-watcher:run` (or `mvn fizzed-watcher:run`) to start the watcher.
 
 ## Unit Tests
 
