@@ -1,0 +1,13 @@
+{
+  "npm": true,
+  "moduleResolution": "node",
+  "sources": [
+    "frontend/**/*",
+    "!frontend/test/**/*",
+    "static/**/*"
+  ],
+  "builds": [
+    {"preset": "es5-bundled"},
+    {"preset": "es6-bundled"}
+  ]
+}

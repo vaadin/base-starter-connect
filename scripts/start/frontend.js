@@ -36,15 +36,10 @@ const CONNECT_PORT = process.env.CONNECT_PORT || 8081;
 
 polyserve
   .startServers(
-    {
-      root: 'frontend',
-      componentDir: '../node_modules',
-      componentUrl: 'node_modules',
-      moduleResolution: 'node',
-      npm: true,
-      hostname: CONNECT_HOSTNAME,
-      port: CONNECT_PORT
-    },
+    Object.assign(
+      {hostname: CONNECT_HOSTNAME, port: CONNECT_PORT},
+      require('../../polymer.json')
+    ),
     async(polyserveApp, options) => {
       const app = express();
       backendEndpoints.forEach(path => app.use(path, backend));
