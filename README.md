@@ -27,6 +27,11 @@ Spring Boot server will be restarted.
 On a backend side the changes are applied via the `fizzed-watcher-maven-plugin` that is automatically started via `npm start` or `npm run start:backend`.
 If you start the project via Maven, run  `./mvnw fizzed-watcher:run` (or `mvn fizzed-watcher:run`) to start the watcher.
 
+## OpenApi browser
+
+The project has the support for displaying the project's OpenApi spec via the browser task: run `npm run start:apibrowser`
+and open `http://localhost:8082` to check out the Vaadin Connect api available.
+
 ## Unit Tests
 
 To run backend unit tests, use `./mvnw test` or `mvn test`.
