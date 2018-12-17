@@ -4,12 +4,17 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const {BabelMultiTargetPlugin} = require('webpack-babel-multi-target-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const context = path.resolve(__dirname, 'frontend');
+
 module.exports = {
   mode: 'production',
   devtool: 'source-map',
-  context: path.resolve(__dirname, 'frontend'),
+  context,
   entry: {
-    index: './index.js'
+    index: [
+      './polyfills.js',
+      './index.js'
+    ]
   },
   resolve: {
     mainFields: [
@@ -24,7 +29,7 @@ module.exports = {
         test: /\.js$/,
         use: [
           BabelMultiTargetPlugin.loader()
-        ]
+        ],
       }
     ]
   },
@@ -34,28 +39,42 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(['build']),
+    new CopyWebpackPlugin(['**/*'], {context: path.resolve(__dirname, 'static')}),
     new CopyWebpackPlugin(
-      ['../static/**/*'],
-      {context: path.resolve('static')}
+      ['webcomponentsjs/**/*'],
+      {context: path.resolve(__dirname, 'node_modules', '@webcomponents')}
     ),
     new BabelMultiTargetPlugin({
+      babel: {
+        plugins: [
+          ["module:fast-async"]
+        ],
+        presetOptions: {
+          exclude: [
+            'transform-regenerator',
+            'transform-async-to-generator'
+          ],
+          useBuiltIns: false
+        }
+      },
+      doNotTarget: [],
+      exclude: [],
       targets: {
         'es6': {
           browsers: [
-            'last 2 Chrome versions',
-            'last 2 Edge versions',
-            'last 2 Firefox versions',
-            'last 2 Safari versions',
-            'not dead'
+            'last 2 Chrome major versions',
+            'last 2 ChromeAndroid major versions',
+            'last 2 Edge major versions',
+            'last 2 Firefox major versions',
+            'last 2 Safari major versions',
+            'last 2 iOS major versions'
           ],
           tagAssetsWithKey: false,
           esModule: true
         },
         'es5': {
           browsers: [
-            'last 2 versions',
-            'ie <= 11',
-            'not dead'
+            'ie 11'
           ],
           tagAssetsWithKey: true,
           noModule: true
