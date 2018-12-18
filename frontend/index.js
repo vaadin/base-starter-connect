@@ -1,12 +1,33 @@
+import '@vaadin/vaadin-login/vaadin-login-overlay';
 import '@vaadin/vaadin-text-field/vaadin-text-field';
 import '@vaadin/vaadin-button/vaadin-button';
-
 import client from './src/generated/connect-client.default.js';
-client.credentials = (options = {}) => {
-  return {username: 'test_login', password: 'test_password'};
+import {GreeterController} from './src/greeter-controller.js';
+
+const vaadinLoginOverlay = document.querySelector('vaadin-login-overlay');
+vaadinLoginOverlay.i18n = {
+  header: {
+    title: 'Vaadin Connect starter',
+  },
+  form: {
+    title: 'Authenticate',
+    username: 'Username',
+    password: 'Password',
+    submit: 'Submit'
+  },
+  additionalInformation: '(use test_login and test_password to authenticate)'
 };
 
-import {GreeterController} from './src/greeter-controller.js';
+client.credentials = (options = {}) => {
+  vaadinLoginOverlay.opened = true;
+  vaadinLoginOverlay.disabled = false;
+  return new Promise(resolve => {
+    vaadinLoginOverlay.addEventListener('login', e => {
+      vaadinLoginOverlay.opened = false;
+      resolve({username: e.detail.username, password: e.detail.password, stayLoggedIn: true});
+    }, {once: true});
+  });
+};
 
 /**
  * Maps the view properties to the DOM.

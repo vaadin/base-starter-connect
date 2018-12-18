@@ -29,7 +29,11 @@ describe('starter application', () => {
       await page
         .findById('nameInput').type('Sponge Bob').end()
         .findById('greet').click().end()
-        .sleep(2500) // Wait for server response
+        .sleep(2000)
+        .execute(`document.getElementById('login').shadowRoot.querySelector('#username').value = 'test_login'`)
+        .execute(`document.getElementById('login').shadowRoot.querySelector('#password').value = 'test_password'`)
+        .execute(`document.getElementById('login').shadowRoot.querySelector('#submit').click()`)
+        .sleep(2000)
         .findById('greeting').getVisibleText().then(text => {
           expect(text).to.equal('Hello, Sponge Bob!');
         });
