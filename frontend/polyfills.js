@@ -1,15 +1,5 @@
-(async() => {
-  if (typeof URLSearchParams === 'undefined') {
-    window.URLSearchParams = (
-      await import(/* webpackChunkName: "polyfills" */ 'url-search-params')
-    ).default;
-  }
+import URLSearchParams from 'url-search-params';
+window.URLSearchParams = URLSearchParams;
 
-  if (typeof fetch === 'undefined') {
-    await import(/* webpackChunkName: "polyfills" */ 'unfetch/polyfill/index.js');
-  }
-
-  if (typeof AbortController === 'undefined') {
-    await import(/* webpackChunkName: "polyfills" */ 'abortcontroller-polyfill/dist/polyfill-patch-fetch');
-  }
-})();
+import 'unfetch/polyfill/index.js';
+import 'abortcontroller-polyfill/dist/polyfill-patch-fetch.js';
