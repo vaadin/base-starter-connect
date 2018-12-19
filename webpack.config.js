@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const {BabelMultiTargetPlugin} = require('webpack-babel-multi-target-plugin');
@@ -44,16 +45,13 @@ module.exports = {
       ['webcomponentsjs/**/*'],
       {context: path.resolve(__dirname, 'node_modules', '@webcomponents')}
     ),
+    new webpack.ProvidePlugin({
+      regeneratorRuntime: 'regenerator-runtime'
+    }),
     new BabelMultiTargetPlugin({
       babel: {
-        plugins: [
-          ["module:fast-async"]
-        ],
         presetOptions: {
-          exclude: [
-            'transform-regenerator',
-            'transform-async-to-generator'
-          ],
+          // debug: true, // uncomment to debug the babel configuration
           useBuiltIns: false
         }
       },
