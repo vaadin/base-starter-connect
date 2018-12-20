@@ -39,7 +39,6 @@
     "@babel/register": "^7.0.0",
     "babel-loader": "^8.0.4",
     "babel-plugin-template-html-minifier": "^2.1.2",
-    "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^4.6.0",
     "html-webpack-plugin": "^3.2.0",
     "http-proxy-middleware": "^0.19.0",
