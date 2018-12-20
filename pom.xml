@@ -194,7 +194,7 @@
                 <executions>
                     <execution>
                         <id>install-frontend-deps</id>
-                        <phase>pre-integration-test</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
@@ -202,6 +202,20 @@
                             <executable>npm</executable>
                             <arguments>
                                 <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build-frontend</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>build:frontend</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -216,20 +230,6 @@
                             <arguments>
                                 <argument>run</argument>
                                 <argument>test:frontend</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build-frontend</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>run</argument>
-                                <argument>build:frontend</argument>
                             </arguments>
                         </configuration>
                     </execution>

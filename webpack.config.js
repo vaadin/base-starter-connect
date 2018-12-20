@@ -46,6 +46,11 @@ module.exports = {
     path: path.resolve(__dirname, 'build')
   },
 
+  performance: {
+    maxAssetSize: 500000,
+    maxEntrypointSize: 500000
+  },
+
   plugins: [
     // Remove the output directory
     new CleanWebpackPlugin(['build']),
