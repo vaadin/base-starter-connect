@@ -7,7 +7,7 @@ describe('starter application', () => {
 
 
     beforeEach(context => {
-      page = context.remote.get('/index.html');
+      page = context.remote.get('index.html');
     });
 
     it('should have an empty greeting message', async() => {
