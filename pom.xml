@@ -172,6 +172,11 @@
                         <goals>
                             <goal>start</goal>
                         </goals>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <server.port>8081</server.port>
+                            </systemPropertyVariables>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>stop-backend-server</id>
@@ -182,7 +187,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -226,7 +231,7 @@
                             <executable>npm</executable>
                             <arguments>
                                 <argument>run</argument>
-                                <argument>test:frontend</argument>
+                                <argument>test:e2e</argument>
                             </arguments>
                             <skip>${skipTests}</skip>
                         </configuration>
