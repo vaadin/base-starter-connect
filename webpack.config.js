@@ -35,7 +35,8 @@ module.exports = {
       {
         test: /\.js$/,
         use: [
-          BabelMultiTargetPlugin.loader()
+          BabelMultiTargetPlugin.loader(),
+          'uglify-template-string-loader'
         ],
       }
     ]
@@ -73,6 +74,22 @@ module.exports = {
     // of browsers
     new BabelMultiTargetPlugin({
       babel: {
+        plugins: [
+          [
+            require('babel-plugin-template-html-minifier'),
+            {
+              modules: {
+                '@polymer/polymer/lib/utils/html-tag.js': ['html']
+              },
+              htmlMinifier: {
+                collapseWhitespace: true,
+                minifyCSS: true,
+                removeComments: true
+              }
+            }
+          ]
+        ],
+
         // @babel/preset-env options common for all bundles
         presetOptions: {
           // debug: true, // uncomment to debug the babel configuration
