@@ -5,9 +5,8 @@ describe('starter application', () => {
   describe('index page', () => {
     let page, greeting, nameInput;
 
-
     beforeEach(context => {
-      page = context.remote.get('index.html');
+      page = context.remote.get('');
     });
 
     it('should have an empty greeting message', async() => {
