@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="attach to running backend" type="Remote">
+  <configuration default="false" name="Attach to Running Backend" type="Remote">
     <module name="base-starter-connect" />
     <option name="USE_SOCKET_TRANSPORT" value="true" />
     <option name="SERVER_MODE" value="false" />
