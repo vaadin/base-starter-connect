@@ -60,3 +60,11 @@ if you prefer the Java way, execute `./mvnw verify` or `mvn verify` if you alrea
 The script starts the backend Java server, the Node.js frontend server, and finally it runs [`intern`](https://theintern.io/) a JavaScript testing system able to open the application in a browser and interact with it.
 The test uses [Leadfoot](https://theintern.io/leadfoot/index.html) for driving actions in the browser,
 and [Chai](https://www.chaijs.com/) for making the assertions.
+
+## Packaging the application for production
+
+You can generate the final artefact by runing either `./mvnw package`, `mvn package` or `npm run build`.
+
+In the target folder you will get a `.jar` file with everything set to run the application by typing
+`java -jar target/base-starter-connect-0.0.1-SNAPSHOT.jar`, then you can use the application from any
+supported browser navigating to the url `http://localhost:8080/`
