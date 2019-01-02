@@ -45,7 +45,7 @@
         {
             "type": "java",
             "request": "attach",
-            "name": "Attach to Backend",
+            "name": "Attach to Running Backend",
             "hostName": "localhost",
             "port": 5005
         },
