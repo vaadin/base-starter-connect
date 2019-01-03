@@ -22,5 +22,16 @@
   },
   "instrumenterOptions": {
     "esModules": true
+  },
+  "configs": {
+    "debug-chrome": {
+      "environments": {
+        "browserName": "chrome",
+        "fixSessionCapabilities": false,
+        "goog:chromeOptions": {
+          "debuggerAddress": "127.0.0.1:9222"
+        }
+      }
+    }
   }
 }
