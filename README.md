@@ -32,11 +32,23 @@ If you start the project via Maven, run  `./mvnw fizzed-watcher:run` (or `mvn fi
 The project has the support for displaying the project's OpenApi spec via the browser task: run `npm run start:apibrowser`
 and open `http://localhost:8082` to check out the Vaadin Connect api available.
 
-## Unit Tests
+## Unit tests
 
 To run backend unit tests, use `./mvnw test` or `mvn test`.
 
 To run frontend unit tests, use `npm run test:unit`.
+
+To run selected frontend unit suites or tests, use the `grep` RegExp argument:
+
+```shell
+$ npm run test:unit -- grep="greet with a name"
+```
+
+To attach a Node debugger on the test runner, use:
+
+```shell
+$ NODE_DEBUG_OPTION=--inspect-brk npm run test:unit
+```
 
 Note that it is important to make the logic of every unit tested on its own,
 without involving other dependencies in unit testing, such as the backend,
@@ -52,7 +64,7 @@ to be agnostic to particular frontend frameworks. Instead, the view wrapper
 classes are used to keep the frontend logic in the controllers free of using
 the browser APIs.
 
-## Integration Tests
+## Integration tests
 
 We provide an integration test placed in the `e2e` folder that you can run by executing `npm test`, or
 if you prefer the Java way, execute `./mvnw verify` or `mvn verify` if you already have Maven installed.
@@ -60,6 +72,30 @@ if you prefer the Java way, execute `./mvnw verify` or `mvn verify` if you alrea
 The script starts the backend Java server, the Node.js frontend server, and finally it runs [`intern`](https://theintern.io/) a JavaScript testing system able to open the application in a browser and interact with it.
 The test uses [Leadfoot](https://theintern.io/leadfoot/index.html) for driving actions in the browser,
 and [Chai](https://www.chaijs.com/) for making the assertions.
+To run selected end-to-end unit suites or tests, use the `grep` RegExp argument:
+
+```shell
+$ npm run test -- grep="show the greeting"
+```
+
+To use Chrome DevTools when debugging end-to-end tests, follow these steps:
+
+1. Run `$ npm start` to start the application servers.
+
+2. Launch Chrome with `--remote-debugging-port=9222` argument. See the
+[running Chromium with flags](http://www.chromium.org/developers/how-tos/run-chromium-with-flags)
+guide for more information.
+
+3. Open [`http://localhost:8081`](http://localhost:8081) in the Chrome.
+
+4. Open Chrome DevTools, navigate to Sources and set desired breakpoints.
+
+5. Use the following command to run the end-to-end tests against the Chrome
+instance:
+
+```shell
+$ npm run test:e2e -- -- config=@debug-chrome
+```
 
 ## Packaging the application for production
 
