@@ -7,14 +7,17 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "End-to-End Tests",
+            "outputCapture": "std",
+            "name": "Frontend Unit Tests",
             "env": {
                 "NODE_DEBUG_OPTION": "--inspect-brk"
             },
             "runtimeExecutable": "npm",
             "runtimeArgs": [
                 "run-script",
-                "test:e2e"
+                "test:unit",
+                "--",
+                "grep=${input:grep}"
             ],
             "port": 9229,
             "skipFiles": [
@@ -24,16 +27,37 @@
             ]
         },
         {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Debug Chrome",
+            "url": "http://localhost:8081",
+            "webRoot": "${workspaceFolder}/target/classes/META-INF/resources",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceFolder}/frontend/*",
+                "webpack:///../*": "${workspaceFolder}/*",
+            },
+            "runtimeArgs": [
+                "--remote-debugging-port=9222"
+            ],
+            "skipFiles": [
+                "node_modules/**/*.js"
+            ]
+        },
+        {
             "type": "node",
             "request": "launch",
-            "name": "Frontend Unit Tests",
+            "outputCapture": "std",
+            "name": "    End-to-End Tests on Debug Chrome",
             "env": {
                 "NODE_DEBUG_OPTION": "--inspect-brk"
             },
             "runtimeExecutable": "npm",
             "runtimeArgs": [
                 "run-script",
-                "test:unit"
+                "test:e2e",
+                "--",
+                "grep=${input:grep}",
+                "config=@debug-chrome"
             ],
             "port": 9229,
             "skipFiles": [
@@ -48,13 +72,14 @@
             "name": "Attach to Running Backend",
             "hostName": "localhost",
             "port": 5005
-        },
+        }
+    ],
+    "inputs": [
         {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome",
-            "url": "http://localhost:8081",
-            "webRoot": "${workspaceFolder}/frontend"
+            "id": "grep",
+            "description": "RegExp filter for tests and test suites",
+            "default": ".*",
+            "type": "promptString"
         }
     ]
 }
