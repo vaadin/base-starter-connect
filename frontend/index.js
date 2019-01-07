@@ -2,8 +2,8 @@ import '@vaadin/vaadin-login/vaadin-login-overlay.js';
 import '@vaadin/vaadin-text-field/vaadin-text-field.js';
 import '@vaadin/vaadin-button/vaadin-button.js';
 
-import client from './src/generated/connect-client.default.js';
-import {GreeterController} from './src/greeter-controller.js';
+import client from './generated/connect-client.default.js';
+import {GreeterController} from './greeter-controller.js';
 
 const vaadinLoginOverlay = document.querySelector('vaadin-login-overlay');
 vaadinLoginOverlay.i18n = {

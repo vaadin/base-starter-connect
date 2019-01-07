@@ -9,7 +9,7 @@ greet.rejects(new TypeError('missing argument "name"'));
 
 // Import the unit while stubbing dependencies
 const {GreeterController} = proxyquire.noCallThru()(
-  '../src/greeter-controller.js',
+  '../greeter-controller.js',
   {
     // Stub GreeterService with a `greet` method
     './generated/GreeterService.js': {greet}
