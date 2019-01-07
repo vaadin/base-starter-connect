@@ -34,7 +34,7 @@
             "webRoot": "${workspaceFolder}/target/classes/META-INF/resources",
             "sourceMapPathOverrides": {
                 "webpack:///./*": "${workspaceFolder}/frontend/*",
-                "webpack:///../*": "${workspaceFolder}/*",
+                "webpack:///../*": "${workspaceFolder}/*"
             },
             "runtimeArgs": [
                 "--remote-debugging-port=9222"
