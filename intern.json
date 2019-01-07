@@ -65,6 +65,13 @@
           "extendedDebugging": true
         },
         {
+          "platform": "Windows 10",
+          "browserName": "internet explorer",
+          "version": "11",
+          "fixSessionCapabilities": "no-detect",
+          "extendedDebugging": true
+        },
+        {
           "platform": "OS X 10.13",
           "browserName": "safari",
           "version": [
