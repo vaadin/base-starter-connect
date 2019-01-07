@@ -44,11 +44,14 @@ To run selected frontend unit suites or tests, use the `grep` RegExp argument:
 $ npm run test:unit -- grep="greet with a name"
 ```
 
-To attach a Node debugger on the test runner, use:
+To attach a Node debugger on the test runner, run the following command:
 
 ```shell
 $ NODE_DEBUG_OPTION=--inspect-brk npm run test:unit
 ```
+
+Then open Chrome and navigate to the [chrome://inspect](chrome://inspect) URL
+and click on the inspect link for the `intern` process.
 
 Note that it is important to make the logic of every unit tested on its own,
 without involving other dependencies in unit testing, such as the backend,
@@ -78,24 +81,37 @@ To run selected end-to-end unit suites or tests, use the `grep` RegExp argument:
 $ npm run test -- grep="show the greeting"
 ```
 
-To use Chrome DevTools when debugging end-to-end tests, follow these steps:
+By default, the end-to-end test runner starts the Chrome browser automatically.
+Optionally, you can also run the end-to-end tests against an existing Chrome
+instance to be able to use DevTools for debugging end-to-end tests. Follow
+these steps:
 
-1. Run `$ npm start` to start the application servers.
+1. In a terminal, run `$ npm start` to start the application servers.
 
-2. Launch Chrome with `--remote-debugging-port=9222` argument. See the
-[running Chromium with flags](http://www.chromium.org/developers/how-tos/run-chromium-with-flags)
-guide for more information.
+2. Launch Chrome with `--remote-debugging-port=9222` argument.
 
-3. Open [`http://localhost:8081`](http://localhost:8081) in the Chrome.
+    ```shell
+    # Mac OS
+    $ open -a "Google Chrome" http://localhost:8081 --args --remote-debugging-port=9222
 
-4. Open Chrome DevTools, navigate to Sources and set desired breakpoints.
+    # Linux
+    $ google-chrome --remote-debugging-port=9222 http://localhost:8081
 
-5. Use the following command to run the end-to-end tests against the Chrome
+    # Windows
+    $ chrome.exe --remote-debugging-port=9222 http://localhost:8081
+    ```
+
+    NOTE: See also the [running Chromium with flags](http://www.chromium.org/developers/how-tos/run-chromium-with-flags)
+    guide to adjust the command for your system.
+
+3. In the Chrome, open DevTools, navigate to Sources, and set breakpoints.
+
+4. Use the following command to run the end-to-end tests against the Chrome
 instance:
 
-```shell
-$ npm run test:e2e -- -- config=@debug-chrome
-```
+    ```shell
+    $ npm run test:e2e -- -- config=@debug-chrome
+    ```
 
 ## Packaging the application for production
 
