@@ -27,7 +27,7 @@ describe('starter application', () => {
 
     it('should show the greeting server message', async() => {
       await page
-        .findById('nameInput').type('Sponge Bob').end()
+        .execute(`document.getElementById('nameInput').value = 'Sponge Bob'`)
         .findById('greet').click().end()
         .sleep(2000)
         .execute(`document.getElementById('login').shadowRoot.querySelector('#username').value = 'test_login'`)
