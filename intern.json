@@ -103,6 +103,15 @@
     "ci-public": {},
     "ci": {
       "extends": ["sauce"]
+    },
+    "debug-chrome": {
+      "environments": {
+        "browserName": "chrome",
+        "fixSessionCapabilities": false,
+        "goog:chromeOptions": {
+          "debuggerAddress": "127.0.0.1:9222"
+        }
+      }
     }
   }
 }

@@ -1,0 +1,85 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "outputCapture": "std",
+      "name": "Frontend Unit Tests",
+      "env": {
+        "NODE_DEBUG_OPTION": "--inspect-brk"
+      },
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run-script",
+        "test:unit",
+        "--",
+        "grep=${input:grep}"
+      ],
+      "port": 9229,
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js",
+        "${workspaceFolder}/frontend/test/utils.js",
+        "<node_internals>/**/*"
+      ]
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Debug Chrome",
+      "url": "http://localhost:8081",
+      "webRoot": "${workspaceFolder}/target/classes/META-INF/resources",
+      "sourceMapPathOverrides": {
+        "webpack:///./*": "${workspaceFolder}/frontend/*",
+        "webpack:///../*": "${workspaceFolder}/*"
+      },
+      "runtimeArgs": [
+        "--remote-debugging-port=9222"
+      ],
+      "skipFiles": [
+        "node_modules/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "outputCapture": "std",
+      "name": "    End-to-End Tests on Debug Chrome",
+      "env": {
+        "NODE_DEBUG_OPTION": "--inspect-brk"
+      },
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run-script",
+        "test:e2e",
+        "--",
+        "grep=${input:grep}",
+        "config=@debug-chrome"
+      ],
+      "port": 9229,
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js",
+        "${workspaceFolder}/frontend/test/utils.js",
+        "<node_internals>/**/*"
+      ]
+    },
+    {
+      "type": "java",
+      "request": "attach",
+      "name": "Attach to Running Backend",
+      "hostName": "localhost",
+      "port": 5005
+    }
+  ],
+  "inputs": [
+    {
+      "id": "grep",
+      "description": "RegExp filter for tests and test suites",
+      "default": ".*",
+      "type": "promptString"
+    }
+  ]
+}
