@@ -26,6 +26,7 @@ describe('starter application', () => {
 
     it('should show the greeting server message', async() => {
       await page
+        .execute(`window.localStorage.clear()`)
         .execute(`document.getElementById('nameInput').value = 'Sponge Bob'`)
         .findById('greet').click().end()
         .sleep(2000)
