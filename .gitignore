@@ -1,6 +1,6 @@
 node_modules/
 target/
-frontend/src/generated/
+frontend/generated/
 build/
 
 ### IntelliJ IDEA ###
