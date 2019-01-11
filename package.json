@@ -24,7 +24,7 @@
     "test": "npm run test:unit && npm run start -- -- intern"
   },
   "dependencies": {
-    "@vaadin/connect": "0.3.1",
+    "@vaadin/connect": "0.4.0",
     "@vaadin/vaadin-button": "^2.1.1",
     "@vaadin/vaadin-login": "^1.0.0-alpha3",
     "@vaadin/vaadin-text-field": "^2.1.5",
