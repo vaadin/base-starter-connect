@@ -27,12 +27,18 @@ describe('starter application', () => {
     });
 
     it('should show the greeting server message', async() => {
+      // Forget any authentication stored in localStorage
+      await page.execute(function() {
+        window.localStorage.clear();
+      });
+
       await page
-        .execute(`window.localStorage.clear()`)
-        .execute(`document.getElementById('nameInput').value = 'Sponge Bob'`)
+        .execute(function() {
+          document.getElementById('nameInput').value = 'Sponge Bob';
+        })
         .findById('greet').click();
       await pollUntil(() => document.getElementById('login') !== null);
-      await page.execute(() => {
+      await page.execute(function() {
         const login = document.getElementById('login');
         login.shadowRoot.querySelector('#username').value = 'test_login';
         login.shadowRoot.querySelector('#password').value = 'test_password';
