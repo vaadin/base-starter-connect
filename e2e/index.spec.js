@@ -1,6 +1,8 @@
 const {describe, it, beforeEach} = intern.getPlugin('interface.bdd');
 const {expect} = intern.getPlugin('chai');
 
+import {pollUntil} from '@theintern/leadfoot';
+
 describe('starter application', () => {
   describe('index page', () => {
     let page, greeting, nameInput;
@@ -28,15 +30,18 @@ describe('starter application', () => {
       await page
         .execute(`window.localStorage.clear()`)
         .execute(`document.getElementById('nameInput').value = 'Sponge Bob'`)
-        .findById('greet').click().end()
-        .sleep(2000)
-        .execute(`document.getElementById('login').shadowRoot.querySelector('#username').value = 'test_login'`)
-        .execute(`document.getElementById('login').shadowRoot.querySelector('#password').value = 'test_password'`)
-        .execute(`document.getElementById('login').shadowRoot.querySelector('#submit').click()`)
-        .sleep(2000)
-        .findById('greeting').getVisibleText().then(text => {
-          expect(text).to.equal('Hello, Sponge Bob!');
-        });
+        .findById('greet').click();
+      await pollUntil(() => document.getElementById('login') !== null);
+      await page.execute(() => {
+        const login = document.getElementById('login');
+        login.shadowRoot.querySelector('#username').value = 'test_login';
+        login.shadowRoot.querySelector('#password').value = 'test_password';
+        login.shadowRoot.querySelector('#submit').click();
+      });
+      await pollUntil(
+        text => document.getElementById('greeting').textContent === text,
+        'Hello, Sponge Bob!'
+      );
     });
   });
 });
