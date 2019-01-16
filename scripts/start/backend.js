@@ -47,23 +47,12 @@ process.on('SIGBREAK', () => process.exit(0));
 process.on('SIGHUP', () => process.exit(129));
 process.on('SIGTERM', () => process.exit(137));
 
-// Generator
-const hasFilesWithExtension = (directory, extension) => {
-  return fs.existsSync(directory)
-    && fs.readdirSync(directory).find(pathname => pathname.endsWith(extension));
-};
-if (hasFilesWithExtension('./target', '.jar')) {
-  execMaven(['generate-resources']);
-} else {
-  execMaven(['package', '-DskipTests']);
-}
-
 // Java watcher
 execMaven(['fizzed-watcher:run'], {async: true})
   .catch(process.exit);
 
 // Server
-execMaven(['spring-boot:start', '-Dspring-boot.run.fork'], {async: true})
+execMaven(['compile', 'spring-boot:start', '-Dspring-boot.run.fork'], {async: true})
   .then(() => {
     process.on('exit', () => {
       execMaven(['spring-boot:stop', '-Dspring-boot.stop.fork']);
