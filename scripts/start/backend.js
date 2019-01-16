@@ -34,7 +34,7 @@ const exec = (cmd, args, options = {}) => {
   }
 };
 
-const execMaven = (args, options) => exec('mvn', ['-q', '-e', ...args], options);
+const execMaven = (args, options) => exec('mvn', ['-e', ...args], options);
 
 const endOfOptionsIndex = process.argv.indexOf('--');
 const [chainedExecutable, ...chainedArgs] = endOfOptionsIndex > -1
