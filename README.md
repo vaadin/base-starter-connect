@@ -12,20 +12,24 @@ You need to have Java 8 or newer and Node 8 or newer installed.
 
 ## Running
 
-First, install the required frontend dependencies by running `npm install` (or `yarn install`, it is supported also).
-Run using `npm start` in the root of the project to launch both backend and frontend parts of the app.
-Then navigate to `http://localhost:8081` to see the UI, the backend part starts at `http://localhost:8080`.
+First, install the required frontend dependencies by running `npm install` (or `yarn install` is supported also).
 
-You can launch both backend and frontend separately, use `npm run start:backend` or `npm run start:frontend` correspondingly.
-Backend part can be also started as any Java application, via Maven: `./mvnw spring-boot:run` in the root of the project if you don't have Maven installed or `mvn spring-boot:run` if you do.
+To run the app in dev mode just type `npm start`. Then navigate to `http://localhost:8080` to see the UI.
 
-Both backend and frontend servers listen to changes in order to live reload modifications to the project.
-For the frontend, change files under the `frontend` folder and reload the browser.
-For the backend, change any Java file under `src/main/java` folder and save the changes — Java files will be recompiled, Vaadin Connect resources regenerated and the
-Spring Boot server will be restarted.
+If you prefer to start each process separatly, you need to run `npm run start:webpack` which watches and transpiles
+any change in the frontend code, and then `./mvnw spring-boot:run` or `mvn spring-boot:run` in a different terminal 
+to start the backend server. In order to automatically recompile and run the generator on any backend change, you need 
+to run `./mvnw fizzed-watcher:run` (or `mvn fizzed-watcher:run`) to start the watcher.
 
-On a backend side the changes are applied via the `fizzed-watcher-maven-plugin` that is automatically started via `npm start` or `npm run start:backend`.
-If you start the project via Maven, run  `./mvnw fizzed-watcher:run` (or `mvn fizzed-watcher:run`) to start the watcher.
+### Live reload support
+
+For the frontend code, webpack will watch any change under the `frontend` folder and transpile it.
+
+For the backend part, when a Java file under `src/main/java` is changed, it is recompiled by the backend watcher as well the resources generator is run.
+
+When a change in frontend or backend happens, you will need to reload the browser.
+Though optionally, you might want to install the [live-reload extension](http://livereload.com/extensions/) that automatically
+reloads your browser on any change.
 
 ## OpenApi browser
 
@@ -92,13 +96,13 @@ these steps:
 
     ```shell
     # Mac OS
-    $ open -a "Google Chrome" http://localhost:8081 --args --remote-debugging-port=9222
+    $ open -a "Google Chrome" http://localhost:8080 --args --remote-debugging-port=9222
 
     # Linux
-    $ google-chrome --remote-debugging-port=9222 http://localhost:8081
+    $ google-chrome --remote-debugging-port=9222 http://localhost:8080
 
     # Windows
-    $ chrome.exe --remote-debugging-port=9222 http://localhost:8081
+    $ chrome.exe --remote-debugging-port=9222 http://localhost:8080
     ```
 
     NOTE: See also the [running Chromium with flags](http://www.chromium.org/developers/how-tos/run-chromium-with-flags)

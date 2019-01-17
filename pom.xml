@@ -177,11 +177,6 @@
                         <goals>
                             <goal>start</goal>
                         </goals>
-                        <configuration>
-                            <systemPropertyVariables>
-                                <server.port>8081</server.port>
-                            </systemPropertyVariables>
-                        </configuration>
                     </execution>
                     <execution>
                         <id>stop-backend-server</id>
