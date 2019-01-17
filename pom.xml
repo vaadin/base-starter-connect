@@ -19,32 +19,61 @@
     </parent>
 
     <repositories>
+        <!-- The order of definitions matters. Explicitly defining central here to make sure it has the highest priority. -->
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <!-- The current version of vaadin-connect is a pre-release version, so vaadin-prereleases repository is needed. -->
+        <repository>
+            <id>vaadin-prereleases</id>
+            <url>
+                http://maven.vaadin.com/vaadin-prereleases/
+            </url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <!-- The snapshot repository is needed when people want to test the starter with the latest snapshot of vaadin-connect. -->
         <repository>
             <id>vaadin-snapshots</id>
             <url>
                 https://oss.sonatype.org/content/repositories/vaadin-snapshots/
             </url>
-        </repository>
-        <repository>
-            <id>vaadin-prereleases</id>
-            <url>
-                http://maven.vaadin.com/vaadin-prereleases
-            </url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
-            <id>vaadin-snapshots</id>
-            <url>
-                https://oss.sonatype.org/content/repositories/vaadin-snapshots/
-            </url>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </pluginRepository>
         <pluginRepository>
             <id>vaadin-prereleases</id>
             <url>
-                http://maven.vaadin.com/vaadin-prereleases
+                http://maven.vaadin.com/vaadin-prereleases/
             </url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>vaadin-snapshots</id>
+            <url>
+                https://oss.sonatype.org/content/repositories/vaadin-snapshots/
+            </url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </pluginRepository>
     </pluginRepositories>
 
