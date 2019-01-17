@@ -12,7 +12,8 @@ const {GreeterController} = proxyquire.noCallThru()(
   '../greeter-controller.js',
   {
     // Stub GreeterService with a `greet` method
-    './generated/GreeterService.js': {greet}
+    './generated/GreeterService.js': {greet},
+    './generated/connect-client.default.js': {token: {user_name: 'Jude'}}
   }
 );
 
@@ -40,16 +41,7 @@ describe('GreeterController', () => {
       }
     });
 
-    it('should not greet if name is empty', async() => {
-      expect(greeterView.greeting).to.be.undefined;
-      greeterView.name = '';
-      await greeterController.greetAction();
-      expect(greet).to.not.be.called;
-      expect(greeterView.greeting).to.contain('Enter a name first!');
-    });
-
     it('should greet with a name', async() => {
-      greeterView.name = 'Jude';
       await greeterController.greetAction();
       expect(greet).to.be.calledOnce;
       expect(greet).to.be.calledWithExactly('Jude');
