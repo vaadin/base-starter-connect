@@ -36,11 +36,6 @@ const exec = (cmd, args, options = {}) => {
 
 const execMaven = (args, options) => exec('mvn', ['-e', ...args], options);
 
-const endOfOptionsIndex = process.argv.indexOf('--');
-const [chainedExecutable, ...chainedArgs] = endOfOptionsIndex > -1
-  ? process.argv.slice(endOfOptionsIndex + 1)
-  : [];
-
 // Graceful shutdown
 process.on('SIGINT', () => process.exit(0));
 process.on('SIGBREAK', () => process.exit(0));
@@ -48,10 +43,16 @@ process.on('SIGHUP', () => process.exit(129));
 process.on('SIGTERM', () => process.exit(137));
 
 // Java watcher
-execMaven(['fizzed-watcher:run'], {async: true})
+if (process.argv.indexOf('--nowatch') < 0) {
+  execMaven(['fizzed-watcher:run'], {async: true})
   .catch(process.exit);
+}
 
 // Server
+const endOfOptionsIndex = process.argv.indexOf('--');
+const [chainedExecutable, ...chainedArgs] = endOfOptionsIndex > -1
+  ? process.argv.slice(endOfOptionsIndex + 1)
+  : [];
 execMaven(['compile', 'spring-boot:start', '-Dspring-boot.run.fork'], {async: true})
   .then(() => {
     process.on('exit', () => {
