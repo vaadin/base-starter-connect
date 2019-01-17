@@ -4,12 +4,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.vaadin.connect.oauth.EnableVaadinConnectOAuthServer;
+import com.vaadin.frontend.server.EnableVaadinFrontendServer;
 
 /**
  * Spring boot starter class.
  */
 @SpringBootApplication
 @EnableVaadinConnectOAuthServer
+@EnableVaadinFrontendServer
 public class StarterApplication {
 
     /**
