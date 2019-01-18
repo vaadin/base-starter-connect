@@ -4,6 +4,6 @@
 <mapEntry key="PATH" value="${env_var:PATH}:/usr/local/bin"/>
 </mapAttribute>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="/bin/sh"/>
-<stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value="-c  &quot;npm run start:frontend&quot;"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value="-c  &quot;npm run start:webpack&quot;"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_WORKING_DIRECTORY" value="${workspace_loc:/base-starter-connect}"/>
 </launchConfiguration>
