@@ -18,7 +18,7 @@
     "start:backend": "node scripts/start/backend.js",
     "start:webpack": "webpack --mode development -w",
     "start:apibrowser": "node scripts/start/apibrowser.js",
-    "start": "npm run start:backend -- -- npm run start:apibrowser -- -- npm run start:webpack",
+    "start": "webpack --mode development --silent && npm run start:backend -- -- npm run start:apibrowser -- -- npm run start:webpack",
     "test:unit": "node $NODE_DEBUG_OPTION ./node_modules/.bin/intern environments=node functionalSuites=",
     "test:e2e": "node $NODE_DEBUG_OPTION ./node_modules/.bin/intern",
     "test": "npm run test:unit && npm run build:frontend && npm run start:backend -- --nowatch -- npm run test:e2e"

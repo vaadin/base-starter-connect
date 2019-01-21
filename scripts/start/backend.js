@@ -7,9 +7,7 @@
  *   $ node scripts/start/backend.js
  *   $ node scripts/start/backend.js -- echo "The backend is running..."
  */
-
 const {spawn, execFileSync} = require('child_process');
-const fs = require('fs');
 
 const exec = (cmd, args, options = {}) => {
   console.log(cmd, args, options);
@@ -45,7 +43,7 @@ process.on('SIGTERM', () => process.exit(137));
 // Java watcher
 if (process.argv.indexOf('--nowatch') < 0) {
   execMaven(['fizzed-watcher:run'], {async: true})
-  .catch(process.exit);
+    .catch(process.exit);
 }
 
 // Server
@@ -53,7 +51,7 @@ const endOfOptionsIndex = process.argv.indexOf('--');
 const [chainedExecutable, ...chainedArgs] = endOfOptionsIndex > -1
   ? process.argv.slice(endOfOptionsIndex + 1)
   : [];
-execMaven(['package', '-DskipTests', 'spring-boot:start', '-Dspring-boot.run.fork'], {async: true})
+execMaven(['compile', 'spring-boot:start', '-Dspring-boot.run.fork'], {async: true})
   .then(() => {
     process.on('exit', () => {
       execMaven(['spring-boot:stop', '-Dspring-boot.stop.fork']);
