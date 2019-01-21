@@ -53,7 +53,7 @@ const endOfOptionsIndex = process.argv.indexOf('--');
 const [chainedExecutable, ...chainedArgs] = endOfOptionsIndex > -1
   ? process.argv.slice(endOfOptionsIndex + 1)
   : [];
-execMaven(['compile', 'spring-boot:start', '-Dspring-boot.run.fork'], {async: true})
+execMaven(['package', '-DskipTests', 'spring-boot:start', '-Dspring-boot.run.fork'], {async: true})
   .then(() => {
     process.on('exit', () => {
       execMaven(['spring-boot:stop', '-Dspring-boot.stop.fork']);
