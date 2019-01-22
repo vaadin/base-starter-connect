@@ -12,10 +12,12 @@ export class LoginController {
    * User credentials for Vaadin Connect client
    */
   async credentials() {
+    this.loginView.attached = true;
     this.loginView.disabled = false;
     return new Promise(resolve => {
       this.loginView.afterNextLogin = ({username, password}) => {
         this.loginView.disabled = true;
+        this.loginView.attached = false;
         resolve({username, password, stayLoggedIn: true});
       };
     });
@@ -25,18 +27,9 @@ export class LoginController {
    * Ensure the default client is authenticated
    */
   async loginAction() {
-    // Try login early to avoid flashing login view
-    await client.login();
-    if (client.token) {
-      // Successful login without credentials (refresh_token), skip login view
-      return;
-    }
-
     client.credentials = this.credentials.bind(this);
-    this.loginView.attached = true;
     while (!client.token) {
       await client.login();
     }
-    this.loginView.attached = false;
   }
 }

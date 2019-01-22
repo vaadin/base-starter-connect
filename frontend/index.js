@@ -1,12 +1,12 @@
 import {LoginView} from './login-view.js';
 import {LoginController} from './login-controller.js';
 
-import {GreeterController} from './greeter-controller.js'
-import {GreeterView} from './greeter-view.js';
+import {StatusController} from './status-controller.js'
+import {StatusView} from './status-view.js';
 
 async function main() {
   const loginController = new LoginController(new LoginView(document.body));
   await loginController.loginAction();
-  new GreeterController(new GreeterView(document.body));
+  new StatusController(new StatusView(document.body));
 }
 main();

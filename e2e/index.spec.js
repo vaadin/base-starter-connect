@@ -8,52 +8,63 @@ describe('starter application', () => {
     let page;
 
     before(async context => {
+      await context.remote.session.setExecuteAsyncTimeout(30000);
+      await context.remote.session.setFindTimeout(30000);
       page = context.remote.get('');
     });
 
     describe('login view', () => {
+      let loginForm;
+
+      before(async() => {
+        // Reload with clean localStorage
+        await page.execute(function() { localStorage.clear(); });
+        page = page.get('');
+        await page;
+      });
+
       it('should show login view', async() => {
-        await page.execute(function() { window.localStorage.clear(); });
-        await page.get('');
-        await pollUntilTruthy(function() {
-          return document.getElementById('login');
-        }).call(page);
+        loginForm = page.findById('login');
+        await loginForm;
       });
 
       it('should authenticate', async() => {
         await page.execute(function() {
-          const login = document.getElementById('login');
-          if (login) {
-            login.shadowRoot.querySelector('#username').value = 'test_login';
-            login.shadowRoot.querySelector('#password').value = 'test_password';
-            login.shadowRoot.querySelector('#submit').click();
-          }
+          const loginForm = document.querySelector('#login');
+          loginForm.shadowRoot.querySelector('#username').value = 'test_login';
+          loginForm.shadowRoot.querySelector('#password').value = 'test_password';
+          loginForm.shadowRoot.querySelector('#submit').click();
         });
       });
     });
 
-    describe('greeter view', () => {
-      let greeterView;
-      it('should show greeter view', async() => {
-        await pollUntilTruthy(function() {
-          return document.querySelector('greeter-view');
-        }).apply(page);
-        greeterView = page.findByTagName('greeter-view');
+    describe('status view', () => {
+      let statusView;
+
+      it('should show status view', async() => {
+        statusView = page.findByTagName('status-view');
+        await statusView;
       });
 
-      it('should have an empty greeting message', async() => {
-        await greeterView
-          .findById('greetingLabel').getVisibleText().then(text => {
-            expect(text).to.be.empty;
-          });
+      it('should have empty status message', async() => {
+        const text = await statusView.findById('statusLabel').getVisibleText();
+        expect(text).to.be.empty;
       });
 
-      it('should show the greeting server message', async() => {
-        await greeterView
-          .findById('greet').click();
+      it('should show error message when input is empty', async() => {
+        await statusView.findById('update').click();
+        const text = await statusView.findById('statusLabel').getVisibleText();
+        expect(text).to.equal('Enter a new status first!');
+      });
+
+      it('should update status on server', async() => {
+        await page.execute(function() {
+          document.querySelector('#newStatusInput').value = 'ok';
+        });
+        await statusView.findById('update').click();
         await pollUntilTruthy(function(text) {
-          return document.getElementById('greetingLabel').textContent === text;
-        }, ['Hello, test_login!']).apply(page);
+          return document.querySelector('#statusLabel').textContent === text;
+        }, ['Your status is: ok']).call(page);
       });
     });
   });
