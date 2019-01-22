@@ -9,13 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Sample unit test file.
  * Add more when developing your own project.
  */
-class GreeterServiceTests {
+class StatusServiceTests {
 
     @Test
-    @DisplayName("greet method should contain the name it receives")
-    void greet() {
-        String testName = "Test Name";
+    @DisplayName("update method should contain the status it receives")
+    void update() {
+        String testStatus = "Test Status";
 
-        assertTrue(new GreeterService().greet(testName).contains(testName));
+        assertTrue(new StatusService().update(testStatus).contains(testStatus));
     }
 }

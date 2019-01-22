@@ -7,13 +7,13 @@ import com.vaadin.connect.VaadinService;
  * Any {@code public} method of the class can be called via the corresponding POST request.
  * <p>
  * For the current class and method, the requests should be addressed to
- * {@literal http://localhost:8080/connect/greeterservice/greet} endpoint
+ * {@literal http://localhost:8080/connect/StatusService/update} endpoint
  * where
  * <ul>
  * <li><b>http://localhost:8080</b> is the application base url</li>
  * <li><b>connect</b>  is the Vaadin Connect endpoint, refer to {@literal application.properties} to know how to override it</li>
- * <li><b>greeterservice</b> is the current service class name, case insensitive</li>
- * <li><b>greet</b> is the corresponding method name of the service class, case insensitive</li>
+ * <li><b>StatusService</b> is the current service class name, case insensitive</li>
+ * <li><b>update</b> is the corresponding method name of the service class, case insensitive</li>
  * </ul>
  * <p>
  * <p>
@@ -25,15 +25,15 @@ import com.vaadin.connect.VaadinService;
  * the Vaadin Connect documentation on more complete guide how to configure the application.
  */
 @VaadinService
-public class GreeterService {
+public class StatusService {
     /**
      * Service method that can be called via the corresponding POST request.
      * Refer to the class javadoc for details.
      *
      * @param name a parameter that should be sent as a part of the json request body
-     * @return a generic greeting string that will be sent back as part of the json response body
+     * @return a generic status string that will be sent back as part of the json response body
      */
-    public String greet(String name) {
-        return String.format("Hello, %s!", name);
+    public String update(String newStatus) {
+        return String.format("Your status is: %s", newStatus);
     }
 }
