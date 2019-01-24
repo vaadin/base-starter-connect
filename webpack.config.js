@@ -3,144 +3,158 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const {BabelMultiTargetPlugin} = require('webpack-babel-multi-target-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 
 // This folder is served as static in a spring-boot installation
 const outputFolder = 'target/classes/META-INF/resources';
 
-module.exports = {
-  // Default build mode (the frontend development server forces 'development')
-  mode: 'production',
+module.exports = (env, argv) => {
+  return {
 
-  // Include source maps in the build
-  devtool: 'source-map',
+    // Default build mode (the frontend development server forces 'development')
+    mode: 'production',
 
-  // The directory with the frontend sources
-  context: path.resolve(__dirname, 'frontend'),
+    // Include source maps in the build
+    devtool: 'source-map',
 
-  entry: {
-    polyfills: './polyfills.js',
-    index: './index.js'
-  },
+    // The directory with the frontend sources
+    context: path.resolve(__dirname, 'frontend'),
 
-  resolve: {
-    // Prefer ES module dependencies when declared in package.json
-    mainFields: [
-      'es2015',
-      'module',
-      'main'
-    ]
-  },
+    entry: {
+      polyfills: './polyfills.js',
+      index: './index.js'
+    },
 
-  module: {
-    rules: [
-      // Process .js files though Babel with multiple targets
-      {
-        test: /\.js$/,
-        use: [
-          BabelMultiTargetPlugin.loader(),
-          'uglify-template-string-loader'
-        ],
-      }
-    ]
-  },
+    resolve: {
+      // Prefer ES module dependencies when declared in package.json
+      mainFields: [
+        'es2015',
+        'module',
+        'main'
+      ]
+    },
 
-  output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, outputFolder)
-  },
+    module: {
+      rules: [
+        // Process .js files though Babel with multiple targets
+        {
+          test: /\.js$/,
+          use: [
+            BabelMultiTargetPlugin.loader(),
+            'uglify-template-string-loader'
+          ],
+        }
+      ]
+    },
 
-  performance: {
-    maxAssetSize: 500000,
-    maxEntrypointSize: 500000
-  },
+    output: {
+      filename: '[name].js',
+      path: path.resolve(__dirname, outputFolder)
+    },
 
-  plugins: [
+    performance: {
+      maxAssetSize: 500000,
+      maxEntrypointSize: 500000
+    },
 
-    // Copy static assets
-    new CopyWebpackPlugin(['**/*'], {context: path.resolve(__dirname, 'static')}),
+    plugins: [
 
-    // Copy @webcomponents/webcomponentsjs
-    new CopyWebpackPlugin(
-      ['webcomponentsjs/**/*'],
-      {context: path.resolve(__dirname, 'node_modules', '@webcomponents')}
-    ),
+      // Copy static assets
+      new CopyWebpackPlugin(['**/*'], {context: path.resolve(__dirname, 'static')}),
 
-    // Provide regeneratorRuntime for Babel async transforms
-    new webpack.ProvidePlugin({
-      regeneratorRuntime: 'regenerator-runtime'
-    }),
+      // Copy @webcomponents/webcomponentsjs
+      new CopyWebpackPlugin(
+        ['webcomponentsjs/**/*'],
+        {context: path.resolve(__dirname, 'node_modules', '@webcomponents')}
+      ),
 
-    // Babel configuration for multiple output bundles targeting different sets
-    // of browsers
-    new BabelMultiTargetPlugin({
-      babel: {
-        plugins: [
-          [
-            require('babel-plugin-template-html-minifier'),
-            {
-              modules: {
-                '@polymer/polymer/lib/utils/html-tag.js': ['html']
-              },
-              htmlMinifier: {
-                collapseWhitespace: true,
-                minifyCSS: true,
-                removeComments: true
+      // Provide regeneratorRuntime for Babel async transforms
+      new webpack.ProvidePlugin({
+        regeneratorRuntime: 'regenerator-runtime'
+      }),
+
+      // Babel configuration for multiple output bundles targeting different sets
+      // of browsers
+      new BabelMultiTargetPlugin({
+        babel: {
+          plugins: [
+            [
+              require('babel-plugin-template-html-minifier'),
+              {
+                modules: {
+                  '@polymer/polymer/lib/utils/html-tag.js': ['html']
+                },
+                htmlMinifier: {
+                  collapseWhitespace: true,
+                  minifyCSS: true,
+                  removeComments: true
+                }
               }
-            }
-          ]
+            ]
+          ],
+
+          // @babel/preset-env options common for all bundles
+          presetOptions: {
+            // debug: true, // uncomment to debug the babel configuration
+
+            // Don’t add polyfills, they are provided from webcomponents-loader.js
+            useBuiltIns: false
+          }
+        },
+
+        // Modules excluded from targeting into different bundles
+        doNotTarget: [
+          // Array of RegExp patterns
         ],
 
-        // @babel/preset-env options common for all bundles
-        presetOptions: {
-          // debug: true, // uncomment to debug the babel configuration
+        // Modules that should not be transpiled
+        exclude: [
+          // Array of RegExp patterns
+        ],
 
-          // Don’t add polyfills, they are provided from webcomponents-loader.js
-          useBuiltIns: false
+        // Target browsers with and without ES modules support
+        targets: {
+          'es6': {
+            browsers: [
+              'last 2 Chrome major versions',
+              'last 2 ChromeAndroid major versions',
+              'last 2 Edge major versions',
+              'last 2 Firefox major versions',
+              'last 2 Safari major versions',
+              'last 2 iOS major versions'
+            ],
+            tagAssetsWithKey: false, // don’t append a suffix to the file name
+            esModule: true // marks the bundle used with <script type="module">
+          },
+          'es5': {
+            browsers: [
+              'ie 11'
+            ],
+            tagAssetsWithKey: true, // append a suffix to the file name
+            noModule: true // marks the bundle included without `type="module"`
+          }
         }
-      },
+      }),
 
-      // Modules excluded from targeting into different bundles
-      doNotTarget: [
-        // Array of RegExp patterns
-      ],
+      // Insert the bundles in the html file
+      new HtmlWebpackPlugin({
+        template: 'index.html',
 
-      // Modules that should not be transpiled
-      exclude: [
-        // Array of RegExp patterns
-      ],
+        // Prevent adding multiple bunldles for polyfills, browsers that have ES
+        // modules support don’t need them. The polyfills are listed directly in
+        // the html template to ensure correct loading order.
+        excludeChunks: ['polyfills']
+      }),
 
-      // Target browsers with and without ES modules support
-      targets: {
-        'es6': {
-          browsers: [
-            'last 2 Chrome major versions',
-            'last 2 ChromeAndroid major versions',
-            'last 2 Edge major versions',
-            'last 2 Firefox major versions',
-            'last 2 Safari major versions',
-            'last 2 iOS major versions'
-          ],
-          tagAssetsWithKey: false, // don’t append a suffix to the file name
-          esModule: true // marks the bundle used with <script type="module">
-        },
-        'es5': {
-          browsers: [
-            'ie 11'
-          ],
-          tagAssetsWithKey: true, // append a suffix to the file name
-          noModule: true // marks the bundle included without `type="module"`
-        }
-      }
-    }),
+      // Append Spring Boot LiveReload script in development mode
+      argv.mode === 'development' && new HtmlWebpackIncludeAssetsPlugin({
+        assets: ['http://localhost:35729/livereload.js'],
+        append: true,
+        resolvePaths: false,
+        publicPath: false
+      })
 
-    // Insert the bundles in the html file
-    new HtmlWebpackPlugin({
-      template: 'index.html',
+    ].filter(Boolean)
 
-      // Prevent adding multiple bunldles for polyfills, browsers that have ES
-      // modules support don’t need them. The polyfills are listed directly in
-      // the html template to ensure correct loading order.
-      excludeChunks: ['polyfills']
-    })
-  ]
+  };
 };
