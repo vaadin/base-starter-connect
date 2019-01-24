@@ -1,53 +1,71 @@
-const {describe, it, beforeEach} = intern.getPlugin('interface.bdd');
+const {describe, it, before} = intern.getPlugin('interface.bdd');
 const {expect} = intern.getPlugin('chai');
 
-import {pollUntil} from '@theintern/leadfoot';
+import {pollUntilTruthy} from '@theintern/leadfoot';
 
 describe('starter application', () => {
   describe('index page', () => {
-    let page, greeting, nameInput;
+    let page;
 
-    beforeEach(context => {
+    before(async context => {
+      await context.remote.session.setExecuteAsyncTimeout(30000);
+      await context.remote.session.setFindTimeout(30000);
       page = context.remote.get('');
     });
 
-    it('should have an empty greeting message', async() => {
-      await page
-        .findById('greeting').getVisibleText().then(text => {
-          expect(text).to.be.empty;
-        });
-    });
+    describe('login view', () => {
+      let loginForm;
 
-    it('should show an error message when input is empty', async() => {
-      await page
-        .findById('greet').click().end()
-        .findById('greeting').getVisibleText().then(text => {
-          expect(text).to.equal('Enter a name first!');
-        });
-    });
-
-    it('should show the greeting server message', async() => {
-      // Forget any authentication stored in localStorage
-      await page.execute(function() {
-        window.localStorage.clear();
+      before(async() => {
+        // Reload with clean localStorage
+        await page.execute(function() { localStorage.clear(); });
+        page = page.get('');
+        await page;
       });
 
-      await page
-        .execute(function() {
-          document.getElementById('nameInput').value = 'Sponge Bob';
-        })
-        .findById('greet').click();
-      await pollUntil(() => document.getElementById('login') !== null);
-      await page.execute(function() {
-        const login = document.getElementById('login');
-        login.shadowRoot.querySelector('#username').value = 'test_login';
-        login.shadowRoot.querySelector('#password').value = 'test_password';
-        login.shadowRoot.querySelector('#submit').click();
+      it('should show login view', async() => {
+        loginForm = page.findById('login');
+        await loginForm;
       });
-      await pollUntil(
-        text => document.getElementById('greeting').textContent === text,
-        'Hello, Sponge Bob!'
-      );
+
+      it('should authenticate', async() => {
+        await page.execute(function() {
+          const loginForm = document.querySelector('#login');
+          loginForm.shadowRoot.querySelector('#username').value = 'test_login';
+          loginForm.shadowRoot.querySelector('#password').value = 'test_password';
+          loginForm.shadowRoot.querySelector('#submit').click();
+        });
+      });
+    });
+
+    describe('status view', () => {
+      let statusView;
+
+      it('should show status view', async() => {
+        statusView = page.findByTagName('status-view');
+        await statusView;
+      });
+
+      it('should have empty status message', async() => {
+        const text = await statusView.findById('statusLabel').getVisibleText();
+        expect(text).to.be.empty;
+      });
+
+      it('should show error message when input is empty', async() => {
+        await statusView.findById('update').click();
+        const text = await statusView.findById('statusLabel').getVisibleText();
+        expect(text).to.equal('Enter a new status first!');
+      });
+
+      it('should update status on server', async() => {
+        await page.execute(function() {
+          document.querySelector('#newStatusInput').value = 'ok';
+        });
+        await statusView.findById('update').click();
+        await pollUntilTruthy(function(text) {
+          return document.querySelector('#statusLabel').textContent === text;
+        }, ['Your status is: ok']).call(page);
+      });
     });
   });
 });
