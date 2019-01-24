@@ -54,10 +54,11 @@ const [chainedExecutable, ...chainedArgs] = endOfOptionsIndex > -1
 execMaven(['compile', 'spring-boot:start', '-Dspring-boot.run.fork'], {async: true})
   .then(() => {
     process.on('exit', () => {
-      execMaven(['spring-boot:stop', '-Dspring-boot.stop.fork']);
+      execMaven(['spring-boot:stop', '-Dspring-boot.stop.fork'], {stdio: 'ignore', async: true});
     });
 
     if (chainedExecutable) {
+      chainedArgs.push('--', '--env.connectBackend=http://localhost:8080');
       return exec(chainedExecutable, chainedArgs, {async: true})
         .then(process.exit);
     }

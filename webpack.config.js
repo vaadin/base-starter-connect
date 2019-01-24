@@ -152,6 +152,22 @@ module.exports = (env, argv) => {
         append: true,
         resolvePaths: false,
         publicPath: false
+      }),
+
+      new webpack.ProgressPlugin((percentage, message, ...args) => {
+        if (percentage === 1) {
+          setTimeout(() => {
+            console.info("================================================================");
+            console.info("Done Webpack compiling!");
+            if(env && env.connectApiBrowser) {
+              console.info("Started API Browser at:", env.connectApiBrowser);
+            }
+            if(env && env.connectBackend) {
+              console.info("Started Vaadin Connect application at:", env.connectBackend);
+            }
+            console.info("================================================================");
+          }, 500);
+        }
       })
 
     ].filter(Boolean)

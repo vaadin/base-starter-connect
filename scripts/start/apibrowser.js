@@ -72,6 +72,7 @@ server.listen(CONNECT_API_PORT, CONNECT_API_HOSTNAME, () => {
   const url = new URL(`http://${hostname}:${port}`);
   console.log(`Started Vaadin Connect OpenApi UI at: ${url}`);
   if (chainedExecutable) {
+    chainedArgs.push('--env.connectApiBrowser=http://localhost:8082');
     const chainedProcess = spawn(
       chainedExecutable,
       chainedArgs,

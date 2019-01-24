@@ -13,10 +13,10 @@
     "Base"
   ],
   "scripts": {
-    "build:frontend": "webpack",
+    "build:frontend": "webpack --progress",
     "build": "./mvnw package",
     "start:backend": "node scripts/start/backend.js",
-    "start:webpack": "webpack --mode development -w",
+    "start:webpack": "node scripts/start/webpack.js",
     "start:apibrowser": "node scripts/start/apibrowser.js",
     "start": "npm run start:backend -- -- npm run start:apibrowser -- -- npm run start:webpack",
     "test:unit": "node $NODE_DEBUG_OPTION ./node_modules/.bin/intern environments=node functionalSuites=",
