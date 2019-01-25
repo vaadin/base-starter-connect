@@ -28,6 +28,7 @@
     "@vaadin/vaadin-button": "^2.1.2",
     "@vaadin/vaadin-login": "^1.0.0-alpha8",
     "@vaadin/vaadin-text-field": "^2.3.0-alpha7",
+    "@vaadin/vaadin-themable-mixin": "^1.4.1",
     "@webcomponents/webcomponentsjs": "^2.2.1",
     "abortcontroller-polyfill": "^1.2.1",
     "unfetch": "^4.0.1",
