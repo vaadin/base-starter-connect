@@ -24,7 +24,7 @@
     "test": "npm run test:unit && npm run build:frontend && npm run start:backend -- --nowatch -- npm run test:e2e"
   },
   "dependencies": {
-    "@vaadin/connect": "0.4.0",
+    "@vaadin/connect": "0.5.1",
     "@vaadin/vaadin-button": "^2.1.2",
     "@vaadin/vaadin-login": "^1.0.0-alpha8",
     "@vaadin/vaadin-text-field": "^2.3.0-alpha7",
