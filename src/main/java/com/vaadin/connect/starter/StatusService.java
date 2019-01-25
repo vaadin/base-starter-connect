@@ -30,7 +30,7 @@ public class StatusService {
      * Service method that can be called via the corresponding POST request.
      * Refer to the class javadoc for details.
      *
-     * @param name a parameter that should be sent as a part of the json request body
+     * @param newStatus a parameter that should be sent as a part of the json request body
      * @return a generic status string that will be sent back as part of the json response body
      */
     public String update(String newStatus) {
