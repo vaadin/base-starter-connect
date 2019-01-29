@@ -10,7 +10,6 @@
 const {spawn, execFileSync} = require('child_process');
 
 const exec = (cmd, args, options = {}) => {
-  console.log(cmd, args, options);
   options = Object.assign({stdio: 'inherit'}, options);
   if (options.async) {
     return new Promise((resolve, reject) => {

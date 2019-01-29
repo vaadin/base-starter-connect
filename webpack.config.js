@@ -7,6 +7,7 @@ const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plug
 
 // This folder is served as static in a spring-boot installation
 const outputFolder = 'target/classes/META-INF/resources';
+let compilations = 0;
 
 module.exports = (env, argv) => {
   return {
@@ -154,23 +155,25 @@ module.exports = (env, argv) => {
         publicPath: false
       }),
 
+      // Monitor Webpack progress to show a message when in devmode
       new webpack.ProgressPlugin((percentage, message, ...args) => {
         if (percentage === 1) {
-          setTimeout(() => {
-            console.info("================================================================");
-            console.info("Done Webpack compiling!");
-            if(env && env.connectApiBrowser) {
-              console.info("Started API Browser at:", env.connectApiBrowser);
+          if (argv.mode === 'development') {
+            let msg;
+            if (compilations++) {
+              msg = "\rWebpack has re-compiled changes                                          ";
+            } else {
+              msg = "\r=====================================================================";
+              msg += "\nWebpack compilation done! ";
+              msg += (env && env.connectApiBrowser) ? `\nStarted API Browser at: ${env.connectApiBrowser}` : '';
+              msg += (env && env.connectBackend) ? `\nStarted Vaadin Connect application at: ${env.connectBackend}` : '';
+              msg += "\n=====================================================================";
             }
-            if(env && env.connectBackend) {
-              console.info("Started Vaadin Connect application at:", env.connectBackend);
-            }
-            console.info("================================================================");
-          }, 500);
+            console.log(msg);
+          }
         }
       })
 
     ].filter(Boolean)
-
   };
 };

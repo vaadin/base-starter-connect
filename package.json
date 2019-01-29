@@ -13,12 +13,12 @@
     "Base"
   ],
   "scripts": {
-    "build:frontend": "webpack --progress",
+    "build:frontend": "webpack",
     "build": "./mvnw package",
     "start:backend": "node scripts/start/backend.js",
-    "start:webpack": "node scripts/start/webpack.js",
+    "start:webpack": "webpack --mode development --progress --silent --watch",
     "start:apibrowser": "node scripts/start/apibrowser.js",
-    "start": "npm run start:backend -- -- npm run start:apibrowser -- -- npm run start:webpack",
+    "start": "npm --silent run start:backend -- -- npm --silent run start:apibrowser -- -- npm --silent run start:webpack",
     "test:unit": "node $NODE_DEBUG_OPTION ./node_modules/.bin/intern environments=node functionalSuites=",
     "test:e2e": "node $NODE_DEBUG_OPTION ./node_modules/.bin/intern",
     "test": "npm run test:unit && npm run build:frontend && npm run start:backend -- --nowatch -- npm run test:e2e"
