@@ -161,13 +161,12 @@ module.exports = (env, argv) => {
           if (argv.mode === 'development') {
             let msg;
             if (compilations++) {
-              msg = "\rWebpack has re-compiled changes                                          ";
+              msg = '\r 🚀  \x1b[36mVaadin Connect\x1b[0m Webpack has reloaded changes';
             } else {
-              msg = "\r=====================================================================";
-              msg += "\nWebpack compilation done! ";
-              msg += (env && env.connectApiBrowser) ? `\nStarted API Browser at: ${env.connectApiBrowser}` : '';
-              msg += (env && env.connectBackend) ? `\nStarted Vaadin Connect application at: ${env.connectBackend}` : '';
-              msg += "\n=====================================================================";
+              msg = '\r 🌀  \x1b[36mVaadin Connect\x1b[0m Webpack is watching for changes on ./fronted\n';
+              if (env && env.backend) {
+                msg += `\n 👍  \x1b[36mVaadin Connect\x1b[0m Application Ready at \x1b[32m${env.backend}\x1b[0m 👍\n`;
+              }
             }
             console.log(msg);
           }
