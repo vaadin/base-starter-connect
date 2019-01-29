@@ -8,6 +8,7 @@
  *   $ node scripts/start/backend.js -- echo "The backend is running..."
  */
 const {spawn, execFileSync} = require('child_process');
+const url = "http://localhost:8080/";
 
 const exec = (cmd, args, options = {}) => {
   options = Object.assign({stdio: 'inherit'}, options);
@@ -39,12 +40,6 @@ process.on('SIGBREAK', () => process.exit(0));
 process.on('SIGHUP', () => process.exit(129));
 process.on('SIGTERM', () => process.exit(137));
 
-// Java watcher
-if (process.argv.indexOf('--nowatch') < 0) {
-  execMaven(['fizzed-watcher:run'], {async: true})
-    .catch(process.exit);
-}
-
 // Server
 const endOfOptionsIndex = process.argv.indexOf('--');
 const [chainedExecutable, ...chainedArgs] = endOfOptionsIndex > -1
@@ -52,12 +47,19 @@ const [chainedExecutable, ...chainedArgs] = endOfOptionsIndex > -1
   : [];
 execMaven(['compile', 'spring-boot:start', '-Dspring-boot.run.fork'], {async: true})
   .then(() => {
-    process.on('exit', () => {
-      execMaven(['spring-boot:stop', '-Dspring-boot.stop.fork'], {stdio: 'ignore', async: true});
-    });
+    console.log();
+
+    // Java watcher
+    if (process.argv.indexOf('--nowatch') < 0) {
+      execMaven(['-q', 'fizzed-watcher:run'], {async: true})
+        .catch(process.exit);
+        console.log(` 🌀  \x1b[36mVaadin Connect\x1b[0m is watching for Java changes on ./src/main/java`);
+      }
+
+    console.log(` 🌀  \x1b[36mVaadin Connect\x1b[0m Backend is running at: ${url}`);
 
     if (chainedExecutable) {
-      chainedArgs.push('--', '--env.connectBackend=http://localhost:8080');
+      chainedArgs.push('--', `--env.backend=${url}`);
       return exec(chainedExecutable, chainedArgs, {async: true})
         .then(process.exit);
     }

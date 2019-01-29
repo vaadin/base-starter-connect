@@ -7,7 +7,7 @@ const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plug
 
 // This folder is served as static in a spring-boot installation
 const outputFolder = 'target/classes/META-INF/resources';
-let compilations = 0;
+let first = true;
 
 module.exports = (env, argv) => {
   return {
@@ -155,24 +155,28 @@ module.exports = (env, argv) => {
         publicPath: false
       }),
 
-      // Monitor Webpack progress to show a message when in devmode
-      new webpack.ProgressPlugin((percentage, message, ...args) => {
-        if (percentage === 1) {
-          if (argv.mode === 'development') {
+      // When Webpack finishes, show a message when in devmode
+      function () {
+        if (argv.mode === 'development') {
+          const compiler = this;
+          compiler.hooks.done.tap('VaadinConnect', stats => {
+            const errors = stats.hasErrors();
+            const warnings = stats.hasWarnings();
+            const emoji = errors ? '🚫 \x1b[31;1mThere are compilation errors in frontend code\x1b[0m 🚫' : '👍'
             let msg;
-            if (compilations++) {
-              msg = "\rWebpack has re-compiled changes                                          ";
+            if (first) {
+              first = false;
+              msg = '\r 🌀  \x1b[36mVaadin Connect\x1b[0m Webpack is watching for changes on ./fronted\n';
+              if (env && env.backend) {
+                msg += `\n 🚀  \x1b[36mVaadin Connect\x1b[0m Application Ready at \x1b[32m${env.backend}\x1b[0m ${emoji}\n`;
+              }
             } else {
-              msg = "\r=====================================================================";
-              msg += "\nWebpack compilation done! ";
-              msg += (env && env.connectApiBrowser) ? `\nStarted API Browser at: ${env.connectApiBrowser}` : '';
-              msg += (env && env.connectBackend) ? `\nStarted Vaadin Connect application at: ${env.connectBackend}` : '';
-              msg += "\n=====================================================================";
+              msg = `\r 🚀  \x1b[36mVaadin Connect\x1b[0m Webpack has reloaded changes. ${emoji}`;
             }
-            console.log(msg);
-          }
+            setTimeout(() => console.log(msg), 500);
+          });
         }
-      })
+      }
 
     ].filter(Boolean)
   };

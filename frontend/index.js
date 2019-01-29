@@ -9,4 +9,5 @@ async function main() {
   await loginController.loginAction();
   new StatusController(new StatusView(document.body));
 }
+
 main();
