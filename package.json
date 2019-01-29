@@ -16,7 +16,7 @@
     "build:frontend": "webpack",
     "build": "./mvnw package",
     "start:backend": "node scripts/start/backend.js",
-    "start:webpack": "webpack --mode development --progress --silent --watch",
+    "start:webpack": "webpack --mode development --progress --silent --info-verbosity none --watch",
     "start:apibrowser": "node scripts/start/apibrowser.js",
     "start": "npm --silent run start:backend -- -- npm --silent run start:apibrowser -- -- npm --silent run start:webpack",
     "test:unit": "node $NODE_DEBUG_OPTION ./node_modules/.bin/intern environments=node functionalSuites=",
