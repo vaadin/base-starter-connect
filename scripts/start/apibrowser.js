@@ -4,7 +4,7 @@ const httpProxy = require('http-proxy-middleware');
 const fs = require('fs');
 
 const CONNECT_API_HOSTNAME = process.env.CONNECT_API_HOSTNAME || 'localhost';
-const BACKEND = process.env.BACKEND || `http://${CONNECT_API_HOSTNAME}:8080`;
+const BACKEND = process.env.CONNECT_BACKEND || `http://${CONNECT_API_HOSTNAME}:8080`;
 const CONNECT_API_PORT = process.env.CONNECT_API_PORT || 8082;
 let url;
 
