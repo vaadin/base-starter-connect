@@ -1,12 +1,12 @@
-const {URL} = require('url');
 const {spawn} = require('child_process');
 const express = require('express');
 const httpProxy = require('http-proxy-middleware');
 const fs = require('fs');
 
-const BACKEND = 'http://localhost:8080';
 const CONNECT_API_HOSTNAME = process.env.CONNECT_API_HOSTNAME || 'localhost';
+const BACKEND = process.env.CONNECT_BACKEND || `http://${CONNECT_API_HOSTNAME}:8080`;
 const CONNECT_API_PORT = process.env.CONNECT_API_PORT || 8082;
+let url;
 
 const backend = makeProxyApp(BACKEND);
 const backendEndpoints = [
@@ -45,7 +45,7 @@ function renderOpenApiHtml() {
           requestInterceptor: request => {
             request.url = request.url.replace(
               '${BACKEND}',
-              'http://${CONNECT_API_HOSTNAME}:${CONNECT_API_PORT}'
+              '${url}'
             );
             return request;
           },
@@ -69,8 +69,11 @@ const server = require('http').createServer(app);
 server.listen(CONNECT_API_PORT, CONNECT_API_HOSTNAME, () => {
   const {address, port} = server.address();
   const hostname = CONNECT_API_HOSTNAME || address;
-  const url = new URL(`http://${hostname}:${port}`);
-  console.log(`Started Vaadin Connect OpenApi UI at: ${url}`);
+  url = `http://${hostname}:${port}`;
+  process.env.API = url;
+
+  console.log(` 🌀  \x1b[36mVaadin Connect\x1b[0m OpenApi UI is running at: ${url}`);
+
   if (chainedExecutable) {
     const chainedProcess = spawn(
       chainedExecutable,

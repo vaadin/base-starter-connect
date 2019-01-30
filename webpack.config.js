@@ -5,8 +5,11 @@ const {BabelMultiTargetPlugin} = require('webpack-babel-multi-target-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 
+const inputFolder = './frontend';
 // This folder is served as static in a spring-boot installation
-const outputFolder = 'target/classes/META-INF/resources';
+const outputFolder = './target/classes/META-INF/resources';
+
+let first = true;
 
 module.exports = (env, argv) => {
   return {
@@ -18,7 +21,7 @@ module.exports = (env, argv) => {
     devtool: 'source-map',
 
     // The directory with the frontend sources
-    context: path.resolve(__dirname, 'frontend'),
+    context: path.resolve(__dirname, inputFolder),
 
     entry: {
       polyfills: './polyfills.js',
@@ -152,9 +155,28 @@ module.exports = (env, argv) => {
         append: true,
         resolvePaths: false,
         publicPath: false
-      })
+      }),
+
+      // When Webpack finishes, show a message when in devmode
+      function () {
+        if (argv.mode === 'development') {
+          this.hooks.done.tap('VaadinConnect', stats => {
+            const emoji = stats.hasErrors() ? '🚫 \x1b[31;1mThere are compilation errors in frontend code\x1b[0m 🚫' : '👍';
+            let msg;
+            if (first) {
+              first = false;
+              msg = `\r 🌀  \x1b[36mVaadin Connect\x1b[0m Webpack is watching for changes on ${inputFolder}\n`;
+              if (process.env.CONNECT_BACKEND) {
+                msg += `\n 🚀  \x1b[36mVaadin Connect\x1b[0m Application Ready at \x1b[32m${process.env.CONNECT_BACKEND}\x1b[0m ${emoji}\n`;
+              }
+            } else {
+              msg = `\r 🚀  \x1b[36mVaadin Connect\x1b[0m Webpack has reloaded changes. ${emoji}`;
+            }
+            setTimeout(() => console.log(msg), 500);
+          });
+        }
+      }
 
     ].filter(Boolean)
-
   };
 };
