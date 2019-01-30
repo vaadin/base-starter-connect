@@ -1,13 +1,11 @@
-import {LoginView} from './login-view.js';
-import {LoginController} from './login-controller.js';
+import {Router} from '@vaadin/router';
 
-import {StatusController} from './status-controller.js'
-import {StatusView} from './status-view.js';
+import './root-view.js';
+import './user-view.js';
 
-async function main() {
-  const loginController = new LoginController(new LoginView(document.body));
-  await loginController.loginAction();
-  new StatusController(new StatusView(document.body));
-}
-
-main();
+const outlet = document.getElementById('outlet');
+const router = new Router(outlet);
+router.setRoutes([
+  {path: '/',     component: 'root-view'},
+  {path: '/user',  component: 'user-view'}
+]);

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@vaadin/connect": "0.5.1",
+    "@vaadin/router": "^1.2.0",
     "@vaadin/vaadin-button": "^2.1.2",
     "@vaadin/vaadin-login": "^1.0.0-alpha8",
     "@vaadin/vaadin-text-field": "^2.3.0-alpha7",

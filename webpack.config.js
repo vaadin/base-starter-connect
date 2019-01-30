@@ -166,8 +166,8 @@ module.exports = (env, argv) => {
             if (first) {
               first = false;
               msg = `\r 🌀  \x1b[36mVaadin Connect\x1b[0m Webpack is watching for changes on ${inputFolder}\n`;
-              if (process.env.BACKEND) {
-                msg += `\n 🚀  \x1b[36mVaadin Connect\x1b[0m Application Ready at \x1b[32m${process.env.BACKEND}\x1b[0m ${emoji}\n`;
+              if (process.env.CONNECT_BACKEND) {
+                msg += `\n 🚀  \x1b[36mVaadin Connect\x1b[0m Application Ready at \x1b[32m${process.env.CONNECT_BACKEND}\x1b[0m ${emoji}\n`;
               }
             } else {
               msg = `\r 🚀  \x1b[36mVaadin Connect\x1b[0m Webpack has reloaded changes. ${emoji}`;
