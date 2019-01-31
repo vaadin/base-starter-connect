@@ -57,6 +57,8 @@ function renderOpenApiHtml() {
 </html>`;
 }
 
+console.log(`\n 🌀  \x1b[36mVaadin Connect\x1b[0m API browser is starting ...`);
+
 const app = express();
 backendEndpoints.forEach(path => app.use(path, backend));
 app.get(['/', '/index.html'], (req, res) => {
