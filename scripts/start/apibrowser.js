@@ -1,4 +1,4 @@
-const {spawn} = require('child_process');
+const spawn = require('cross-spawn');
 const express = require('express');
 const httpProxy = require('http-proxy-middleware');
 const fs = require('fs');
@@ -56,6 +56,8 @@ function renderOpenApiHtml() {
 </body>
 </html>`;
 }
+
+console.log(`\n 🌀  \x1b[36mVaadin Connect\x1b[0m API browser is starting ...`);
 
 const app = express();
 backendEndpoints.forEach(path => app.use(path, backend));
