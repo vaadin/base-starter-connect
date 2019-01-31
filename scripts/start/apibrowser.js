@@ -1,4 +1,4 @@
-const {spawn} = require('child_process');
+const spawn = require('cross-spawn');
 const express = require('express');
 const httpProxy = require('http-proxy-middleware');
 const fs = require('fs');
