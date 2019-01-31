@@ -7,7 +7,9 @@
  *   $ node scripts/start/backend.js
  *   $ node scripts/start/backend.js -- echo "The backend is running..."
  */
-const {spawn, execFileSync} = require('child_process');
+const spawn = require('cross-spawn');
+const kill = require('tree-kill');
+
 const url = "http://localhost:8080/";
 
 const exec = (cmd, args, options = {}) => {
@@ -16,7 +18,7 @@ const exec = (cmd, args, options = {}) => {
     return new Promise((resolve, reject) => {
       const childProcess = spawn(cmd, args, options);
       // Ensure the child process is killed on shutdown
-      process.addListener('exit', childProcess.kill, {once: true});
+      process.addListener('exit', () => kill(childProcess.pid), {once: true});
       childProcess.on('exit', code => {
         if (code === 0) {
           resolve({code});
@@ -26,11 +28,11 @@ const exec = (cmd, args, options = {}) => {
       });
     });
   } else {
-    execFileSync(cmd, args, options);
+    spawn.sync(cmd, args, options);
   }
 };
 
-const execMaven = (args, options) => exec('mvn', ['-e', ...args], options);
+const execMaven = (args, options) => exec('./mvnw', ['-e', ...args], options);
 
 // Graceful shutdown
 process.on('SIGINT', () => process.exit(0));
@@ -56,7 +58,7 @@ try {
   if (process.argv.indexOf('--nowatch') < 0) {
     execMaven(['-q', 'fizzed-watcher:run'], {async: true})
       .catch(process.exit);
-    console.log(` 🌀  \x1b[36mVaadin Connect\x1b[0m is watching for Java changes on ./src/main/java`);
+    console.log(` 🌀  \x1b[36mVaadin Connect\x1b[0m Watching for Java changes on ./src/main/java`);
   }
 
   // Run other processes passed through the arguments line
@@ -71,5 +73,6 @@ try {
   }
 
 } catch (error) {
-  console.log('\n🚫 \x1b[36mVaadin Connect\x1b[0m \x1b[31;1mUnable to start the backend. Check whether another instance is already running \x1b[0m 🚫\n');
+  console.error(error);
+  console.log('\n 🚫  \x1b[36mVaadin Connect\x1b[0m \x1b[31;1mUnable to start the backend. Check whether another instance is already running \x1b[0m\n');
 }
