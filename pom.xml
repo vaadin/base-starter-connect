@@ -152,7 +152,9 @@
                             <goal>generate-vaadin-client</goal>
                             <!--Generates Vaadin Connect services' modules to ease their method access, happens on generate-resources phase by default-->
                             <goal>generate-connect-modules</goal>
-                        </goals>
+                            <!-- Generate a signing key on the first startup. Allows access tokens to work across server restarts -->
+                            <goal>generate-token-signing-key</goal>
+                         </goals>
                     </execution>
                 </executions>
                 <!--
