@@ -14,6 +14,7 @@
   ],
   "scripts": {
     "build:frontend": "webpack",
+    "build:generated": "tsc",
     "build": "./mvnw package",
     "start:backend": "node scripts/start/backend.js",
     "start:webpack": "webpack --mode development --progress --silent --info-verbosity none --watch",
@@ -24,7 +25,7 @@
     "test": "npm run test:unit && npm run build:frontend && npm run start:backend -- --nowatch -- npm run test:e2e"
   },
   "dependencies": {
-    "@vaadin/connect": "0.5.1",
+    "@vaadin/connect": "0.6.0",
     "@vaadin/vaadin-button": "^2.1.2",
     "@vaadin/vaadin-login": "^1.0.0-alpha8",
     "@vaadin/vaadin-text-field": "^2.3.0-alpha7",
@@ -53,6 +54,7 @@
     "sinon-chai": "^3.3.0",
     "swagger-ui-dist": "^3.20.4",
     "tree-kill": "^1.2.1",
+    "typescript": "^3.3.3",
     "uglify-template-string-loader": "^1.1.0",
     "webpack": "^4.28.3",
     "webpack-babel-multi-target-plugin": "2.1.0-alpha.7",

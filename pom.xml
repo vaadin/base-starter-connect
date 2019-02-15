@@ -85,7 +85,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <vaadin.connect.version>0.5.1</vaadin.connect.version>
+        <vaadin.connect.version>0.6.2</vaadin.connect.version>
     </properties>
 
     <dependencies>
@@ -228,6 +228,33 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <executions>
+                    <!-- Compile generated TypeScript to JavaScript -->
+                    <!--
+                      NOTE: unlike the rest of the build-frontend, this is done
+                      in the compile phase. The same phase when the TypeScript
+                      generator runs, so that the TypeScript generator output
+                      is compiled to JavaScript right away. That allows for
+                      better compatiblity with existing JavaScript code that
+                      imports JavaScript API generated code.
+                    -->
+                    <!--
+                      TODO: remove this extra step when rewriting the base
+                      starter and the demo app in TypeScript.
+                    -->
+                    <execution>
+                        <id>build-generated</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>yarn</executable>
+                            <arguments>
+                                <argument>build:generated</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+
                     <!-- Build frontend production bundle -->
                     <execution>
                         <id>build-frontend</id>
