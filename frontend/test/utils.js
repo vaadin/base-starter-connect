@@ -1,7 +1,16 @@
+const path = require('path');
+
+// Enable .ts file loading with ts-node
+require('ts-node').register({
+  project: path.resolve(__dirname, '../../tsconfig.json'),
+  compilerOptions: {
+    module: "CommonJS"
+  }
+});
+
 // Enable ES modules transpilation, including dependencies
 // from `node_modules/@vaadin` under current working directory.
 const babelPackageOpts = require('../../package.json').babel;
-const path = require('path');
 require('@babel/register')(Object.assign({}, babelPackageOpts, {
   ignore: [
     filepath => {

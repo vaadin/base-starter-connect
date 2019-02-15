@@ -14,7 +14,6 @@
   ],
   "scripts": {
     "build:frontend": "webpack",
-    "build:generated": "tsc",
     "build": "./mvnw package",
     "start:backend": "node scripts/start/backend.js",
     "start:webpack": "webpack --mode development --progress --silent --info-verbosity none --watch",
@@ -39,6 +38,7 @@
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
     "@babel/register": "^7.0.0",
+    "awesome-typescript-loader": "^5.2.1",
     "babel-plugin-template-html-minifier": "^2.1.3",
     "copy-webpack-plugin": "^4.6.0",
     "cross-spawn": "^6.0.5",
@@ -54,6 +54,7 @@
     "sinon-chai": "^3.3.0",
     "swagger-ui-dist": "^3.20.4",
     "tree-kill": "^1.2.1",
+    "ts-node": "^8.0.2",
     "typescript": "^3.3.3",
     "uglify-template-string-loader": "^1.1.0",
     "webpack": "^4.28.3",

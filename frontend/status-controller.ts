@@ -1,10 +1,16 @@
-import * as statusService from './generated/StatusService.js';
+import {StatusView} from './status-view';
+import * as statusService from './generated/StatusService';
 
 export class StatusController {
   /**
-   * @param {StatusView} statusView the status view instance
+   * The status view instance
    */
-  constructor(statusView) {
+  public statusView: StatusView;
+
+  /**
+   * @param statusView the status view instance
+   */
+  constructor(statusView: StatusView) {
     this.statusView = statusView;
     this.statusView.onUpdate = this.updateAction.bind(this);
     this.statusView.attached = true;
@@ -13,7 +19,7 @@ export class StatusController {
   /**
    * Calls the backend method and shows the result.
    */
-  async updateAction() {
+  async updateAction(): Promise<void> {
     const newStatus = this.statusView.newStatus;
     if (!newStatus) {
       this.statusView.status = 'Enter a new status first!';
