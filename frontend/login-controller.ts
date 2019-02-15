@@ -1,17 +1,21 @@
-import client from './generated/connect-client.default.js';
+import {LoginView} from './login-view';
+import client from './generated/connect-client.default';
+import {Credentials} from '@vaadin/connect';
 
 export class LoginController {
+  public loginView: LoginView;
+
   /**
-   * @param {LoginView} loginView the login view instance
+   * @param loginView the login view instance
    */
-  constructor(loginView) {
+  constructor(loginView: LoginView) {
     this.loginView = loginView;
   }
 
   /**
    * User credentials for Vaadin Connect client
    */
-  async credentials() {
+  async credentials(): Promise<Credentials> {
     this.loginView.attached = true;
     this.loginView.disabled = false;
     return new Promise(resolve => {
@@ -26,7 +30,7 @@ export class LoginController {
   /**
    * Ensure the default client is authenticated
    */
-  async loginAction() {
+  async loginAction(): Promise<void> {
     client.credentials = this.credentials.bind(this);
     while (!client.token) {
       await client.login();

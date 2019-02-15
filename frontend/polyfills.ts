@@ -1,3 +1,4 @@
+// @ts-ignore
 import URLSearchParams from 'url-search-params';
 window.URLSearchParams = URLSearchParams;
 

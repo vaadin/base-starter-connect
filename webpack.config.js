@@ -24,11 +24,17 @@ module.exports = (env, argv) => {
     context: path.resolve(__dirname, inputFolder),
 
     entry: {
-      polyfills: './polyfills.js',
-      index: './index.js'
+      polyfills: './polyfills.ts',
+      index: './index.ts'
     },
 
     resolve: {
+      // Enable resolving .ts imports files without extensions
+      extensions: [
+        '.ts',
+        '.js'
+      ],
+
       // Prefer ES module dependencies when declared in package.json
       mainFields: [
         'es2015',
@@ -39,12 +45,23 @@ module.exports = (env, argv) => {
 
     module: {
       rules: [
-        // Process .js files though Babel with multiple targets
         {
-          test: /\.js$/,
+          test: /\.[jt]s$/,
           use: [
             BabelMultiTargetPlugin.loader(),
             'uglify-template-string-loader'
+          ],
+        },
+        {
+          test: /\.ts$/,
+          use: [
+            {
+              loader: 'awesome-typescript-loader',
+              options: {
+                useCache: true,
+                cacheDirectory: 'node_modules/.cache/awesome-typescript-loader',
+              },
+            }
           ],
         }
       ]
