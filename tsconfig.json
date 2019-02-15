@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "frontend/generated",
     "sourceMap": true,
     "inlineSources": true,
     "declaration": true,
@@ -17,7 +16,7 @@
     "noUnusedParameters": true
   },
   "include": [
-    "frontend/generated/**/*.ts"
+    "frontend/**/*.ts"
   ],
   "exclude": []
 }

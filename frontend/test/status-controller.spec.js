@@ -9,10 +9,10 @@ update.rejects(new TypeError('missing argument "newStatus"'));
 
 // Import the unit while stubbing dependencies
 const {StatusController} = proxyquire.noCallThru()(
-  '../status-controller.js',
+  '../status-controller',
   {
     // Stub StatusService with a `update` method
-    './generated/StatusService.js': {update}
+    './generated/StatusService': {update}
   }
 );
 
