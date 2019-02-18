@@ -4,12 +4,16 @@ import '@vaadin/vaadin-login/vaadin-login-overlay.js';
  * A login form with <vaadin-login-overlay>
  */
 export class LoginView {
+  private $parentNode: Node;
+  private $vaadinLoginOverlay: any;
+
   /**
    * @param {Node} parentNode the DOM parent for the greeter view
    */
-  constructor(parentNode = document.body) {
+  constructor(parentNode: Node = document.body) {
     this.$parentNode = parentNode;
-    this.$vaadinLoginOverlay = parentNode.ownerDocument.createElement('vaadin-login-overlay');
+    this.$vaadinLoginOverlay = (parentNode.ownerDocument || document)
+      .createElement('vaadin-login-overlay') as any;
     this.$vaadinLoginOverlay.i18n = {
       header: {
         title: 'Vaadin Connect starter',
@@ -24,14 +28,11 @@ export class LoginView {
     };
   }
 
-  /**
-   * @type {boolean}
-   */
-  get attached() {
+  get attached(): boolean {
     return this.$vaadinLoginOverlay.opened;
   }
 
-  set attached(value) {
+  set attached(value: boolean) {
     if (value) {
       this.$parentNode.appendChild(this.$vaadinLoginOverlay);
       this.$vaadinLoginOverlay.opened = true;
@@ -41,22 +42,16 @@ export class LoginView {
     }
   }
 
-  /**
-   * @type {boolean}
-   */
-  get disabled() {
+  get disabled(): boolean {
     return this.$vaadinLoginOverlay.disabled;
   }
 
-  set disabled(value) {
+  set disabled(value: boolean) {
     this.$vaadinLoginOverlay.disabled = value;
   }
 
-  /**
-   * @type {Function}
-   */
-  set afterNextLogin(callback) {
-    this.$vaadinLoginOverlay.addEventListener('login', e => {
+  set afterNextLogin(callback: (detail: any) => void) {
+    this.$vaadinLoginOverlay.addEventListener('login', (e: CustomEvent) => {
       callback(e.detail);
     }, {once: true});
   }
