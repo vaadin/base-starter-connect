@@ -1,5 +1,5 @@
 {
-  "functionalSuites": "e2e/**/*.spec.js",
+  "functionalSuites": "e2e/**/*.spec.*",
   "serverUrl": "http://localhost:8080",
   "serverPort": 9002,
   "socketPort": 9003,
@@ -10,7 +10,7 @@
     }
   },
   "node": {
-    "suites": "frontend/test/**/*.spec.js",
+    "suites": "frontend/test/**/*.spec.*",
     "plugins": [
       "./frontend/test/utils.js"
     ]
