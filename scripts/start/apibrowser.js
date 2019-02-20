@@ -44,8 +44,8 @@ function renderOpenApiHtml() {
           "dom_id": "#swagger-ui",
           requestInterceptor: request => {
             request.url = request.url.replace(
-              '${BACKEND}',
-              '${url}'
+              '${removeTrailingSlash(BACKEND)}',
+              '${removeTrailingSlash(url)}'
             );
             return request;
           },
@@ -55,6 +55,13 @@ function renderOpenApiHtml() {
     </script>
 </body>
 </html>`;
+}
+
+function removeTrailingSlash(url) {
+  if (url && url.length > 0 && url[url.length - 1] === '/') {
+    return url.substr(0, url.length - 1);
+  }
+  return url;
 }
 
 console.log(`\n 🌀  \x1b[36mVaadin Connect\x1b[0m API browser is starting ...`);
