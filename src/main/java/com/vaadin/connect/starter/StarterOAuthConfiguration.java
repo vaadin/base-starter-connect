@@ -14,8 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Configuration
 public class StarterOAuthConfiguration {
-    private static final String TEST_LOGIN = "test_login";
-    private static final String TEST_PASSWORD = "test_password";
+    private static final String TEST_LOGIN = "user";
+    private static final String TEST_PASSWORD = "user";
 
     private final PasswordEncoder encoder;
 

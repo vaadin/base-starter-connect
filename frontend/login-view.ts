@@ -24,7 +24,7 @@ export class LoginView {
         password: 'Password',
         submit: 'Submit'
       },
-      additionalInformation: '(use test_login and test_password to authenticate)'
+      additionalInformation: '(type user / user to authenticate)'
     };
   }
 
