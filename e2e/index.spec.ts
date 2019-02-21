@@ -1,11 +1,12 @@
+/// <reference types="intern" />
 const {describe, it, before} = intern.getPlugin('interface.bdd');
 const {expect} = intern.getPlugin('chai');
 
-import {pollUntilTruthy} from '@theintern/leadfoot';
+import {pollUntilTruthy, Command, Element} from '@theintern/leadfoot';
 
 describe('starter application', () => {
   describe('index page', () => {
-    let page;
+    let page: Command<void>;
 
     before(async context => {
       await context.remote.session.setExecuteAsyncTimeout(30000);
@@ -14,7 +15,7 @@ describe('starter application', () => {
     });
 
     describe('login view', () => {
-      let loginForm;
+      let loginForm: Command<Element>;
 
       before(async() => {
         // Reload with clean localStorage
@@ -31,15 +32,24 @@ describe('starter application', () => {
       it('should authenticate', async() => {
         await page.execute(function() {
           const loginForm = document.querySelector('#login');
-          loginForm.shadowRoot.querySelector('#username').value = 'test_login';
-          loginForm.shadowRoot.querySelector('#password').value = 'test_password';
-          loginForm.shadowRoot.querySelector('#submit').click();
+          if (!loginForm) {
+            throw new Error('Error: missing login form');
+          }
+          if (!loginForm.shadowRoot) {
+            throw new Error('Error: missing shadow root on the login form');
+          }
+          (loginForm.shadowRoot.querySelector('#username') as HTMLInputElement)
+            .value = 'test_login';
+          (loginForm.shadowRoot.querySelector('#password') as HTMLInputElement)
+            .value = 'test_password';
+          (loginForm.shadowRoot.querySelector('#submit') as HTMLButtonElement)
+            .click();
         });
       });
     });
 
     describe('status view', () => {
-      let statusView;
+      let statusView: Command<Element>;
 
       it('should show status view', async() => {
         statusView = page.findByTagName('status-view');
@@ -59,11 +69,13 @@ describe('starter application', () => {
 
       it('should update status on server', async() => {
         await page.execute(function() {
-          document.querySelector('#newStatusInput').value = 'ok';
+          (document.querySelector('#newStatusInput') as HTMLInputElement)
+            .value = 'ok';
         });
         await statusView.findById('update').click();
         await pollUntilTruthy(function(text) {
-          return document.querySelector('#statusLabel').textContent === text;
+          return (document.querySelector('#statusLabel') as HTMLLabelElement)
+            .textContent === text;
         }, ['Your status is: ok']).call(page);
       });
     });

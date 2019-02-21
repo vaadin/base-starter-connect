@@ -1,3 +1,7 @@
+/// <reference types="intern" />
+import {StatusView as _StatusView} from '../status-view';
+import {StatusController as _StatusController} from '../status-controller';
+
 const {describe, it, beforeEach, afterEach} = intern.getPlugin('interface.bdd');
 const {expect} = intern.getPlugin('chai');
 const {sinon} = intern.getPlugin('sinon');
@@ -17,10 +21,11 @@ const {StatusController} = proxyquire.noCallThru()(
 );
 
 describe('StatusController', () => {
-  let statusView, statusController;
+  let statusView: _StatusView;
+  let statusController: _StatusController;
 
   beforeEach(() => {
-    statusView = {};
+    statusView = <_StatusView> {};
     statusController = new StatusController(statusView);
   });
 
