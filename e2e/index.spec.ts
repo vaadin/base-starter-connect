@@ -39,9 +39,9 @@ describe('starter application', () => {
             throw new Error('Error: missing shadow root on the login form');
           }
           (loginForm.shadowRoot.querySelector('#username') as HTMLInputElement)
-            .value = 'test_login';
+            .value = 'user';
           (loginForm.shadowRoot.querySelector('#password') as HTMLInputElement)
-            .value = 'test_password';
+            .value = 'user';
           (loginForm.shadowRoot.querySelector('#submit') as HTMLButtonElement)
             .click();
         });
