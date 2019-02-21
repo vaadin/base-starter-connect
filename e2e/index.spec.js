@@ -31,8 +31,8 @@ describe('starter application', () => {
       it('should authenticate', async() => {
         await page.execute(function() {
           const loginForm = document.querySelector('#login');
-          loginForm.shadowRoot.querySelector('#username').value = 'test_login';
-          loginForm.shadowRoot.querySelector('#password').value = 'test_password';
+          loginForm.shadowRoot.querySelector('#username').value = 'user';
+          loginForm.shadowRoot.querySelector('#password').value = 'user';
           loginForm.shadowRoot.querySelector('#submit').click();
         });
       });
