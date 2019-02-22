@@ -1,6 +1,6 @@
 {
   "name": "base-starter-connect",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "description": "Vaadin Connect starter project",
   "repository": {
     "type": "git",
