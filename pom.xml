@@ -19,7 +19,7 @@
     </parent>
 
     <properties>
-        <vaadin.connect.version>0.6.4</vaadin.connect.version>
+        <vaadin.connect.version>0.7.0</vaadin.connect.version>
     </properties>
 
     <repositories>
@@ -206,6 +206,9 @@
                         <goals>
                             <goal>start</goal>
                         </goals>
+                        <configuration>
+                            <skip>${skipTests}</skip>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>stop-backend-server</id>
@@ -213,6 +216,9 @@
                         <goals>
                             <goal>stop</goal>
                         </goals>
+                        <configuration>
+                            <skip>${skipTests}</skip>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

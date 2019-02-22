@@ -1,9 +1,9 @@
 package com.vaadin.connect.starter;
 
+import com.vaadin.connect.auth.server.EnableVaadinConnectOAuthServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.vaadin.connect.oauth.EnableVaadinConnectOAuthServer;
 import com.vaadin.frontend.server.EnableVaadinFrontendServer;
 
 /**
