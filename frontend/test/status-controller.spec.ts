@@ -1,11 +1,12 @@
 /// <reference types="intern" />
-import {StatusView as _StatusView} from '../status-view';
 import {StatusController as _StatusController} from '../status-controller';
 
 const {describe, it, beforeEach, afterEach} = intern.getPlugin('interface.bdd');
 const {expect} = intern.getPlugin('chai');
 const {sinon} = intern.getPlugin('sinon');
 const {proxyquire} = intern.getPlugin('proxyquire');
+
+const setStatus = sinon.stub();
 
 const update = sinon.stub();
 update.withArgs('good').resolves('You are good!');
@@ -21,44 +22,32 @@ const {StatusController} = proxyquire.noCallThru()(
 );
 
 describe('StatusController', () => {
-  let statusView: _StatusView;
   let statusController: _StatusController;
 
   beforeEach(() => {
-    statusView = <_StatusView> {};
-    statusController = new StatusController(statusView);
+    statusController = new StatusController(setStatus);
   });
 
   afterEach(() => {
+    setStatus.resetHistory();
     update.resetHistory();
   });
 
   describe('updateAction', () => {
-    it('should be called from view.onUpdate', () => {
-      sinon.spy(StatusController.prototype, 'updateAction');
-      try {
-        statusController = new StatusController(statusView);
-        statusView.onUpdate();
-        expect(statusController.updateAction).to.be.calledOnce;
-      } finally {
-        StatusController.prototype.updateAction.restore();
-      }
-    });
-
     it('should not update if newStatus is empty', async() => {
-      expect(statusView.newStatus).to.be.undefined;
-      statusView.newStatus = '';
-      await statusController.updateAction();
+      expect(setStatus).to.not.be.called;
+      await statusController.updateAction('');
       expect(update).to.not.be.called;
-      expect(statusView.status).to.contain('Enter a new status first!');
+      expect(setStatus).to.be.calledOnce;
+      expect(setStatus).to.be.calledWithExactly('Enter a new status first!');
     });
 
     it('should update with a name', async() => {
-      statusView.newStatus = 'good';
-      await statusController.updateAction();
+      await statusController.updateAction('good');
       expect(update).to.be.calledOnce;
       expect(update).to.be.calledWithExactly('good');
-      expect(statusView.status).to.contain('You are good!');
+      expect(setStatus).to.be.calledOnce;
+      expect(setStatus).to.be.calledWithExactly('You are good!');
     });
   });
 });
