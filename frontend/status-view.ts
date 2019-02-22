@@ -1,71 +1,44 @@
-import '@vaadin/vaadin-text-field/vaadin-text-field.js';
+import {LitElement, customElement, html, property, query} from 'lit-element';
+
 import '@vaadin/vaadin-button/vaadin-button.js';
+import '@vaadin/vaadin-text-field/vaadin-text-field.js';
 
-/**
- * Maps the view properties to the DOM.
- */
-export class StatusView {
-  private $parentNode: Node;
-  private $viewNode: Element;
-  private $newStatusInput: HTMLInputElement;
-  private $updateButton: HTMLButtonElement;
-  private $statusLabel: HTMLLabelElement;
+import {StatusController} from './status-controller';
 
-  /**
-   * @param {Node} parentNode the DOM parent for the status view
-   */
-  constructor(parentNode: Node = document.body) {
-    this.$parentNode = parentNode;
-    this.$viewNode = (parentNode.ownerDocument || document)
-      .createElement('status-view');
-    this.$viewNode.innerHTML = `
-      <vaadin-text-field id="newStatusInput" label="New status"></vaadin-text-field>
+@customElement('status-view')
+export class StatusViewElement extends LitElement {
+  private statusController = new StatusController(
+    this.setStatus.bind(this)
+  );
+
+  @property({type: String}) status: string = '';
+  @query('#newStatusInput') newStatusInput?: HTMLInputElement;
+
+  createRenderRoot() {return this;}
+
+  render() {
+    return html`
+      <vaadin-text-field
+        id="newStatusInput"
+        label="New status"
+      ></vaadin-text-field>
       &#32;
-      <vaadin-button id="update">Update status</vaadin-button>
+      <vaadin-button
+        id="update"
+        @click="${this.onUpdateClick}"
+      >Update status</vaadin-button>
       <br>
-      <label id="statusLabel"></label>
+      <label id="statusLabel">${this.status}</label>
     `;
-    this.$newStatusInput = this.$viewNode
-      .querySelector('#newStatusInput') as HTMLInputElement;
-    this.$updateButton = this.$viewNode
-      .querySelector('#update') as HTMLButtonElement;
-    this.$statusLabel = this.$viewNode
-      .querySelector('#statusLabel') as HTMLLabelElement;
   }
 
-  get attached(): boolean {
-    return this.$viewNode.isConnected;
+  setStatus(status: string): void {
+    this.status = status;
   }
 
-  set attached(value: boolean) {
-    if (value) {
-      this.$parentNode.appendChild(this.$viewNode);
-    } else {
-      this.$parentNode.removeChild(this.$viewNode);
-    }
-  }
-
-  get newStatus(): string {
-    return this.$newStatusInput.value;
-  }
-
-  set newStatus(value: string) {
-    this.$newStatusInput.value = value;
-  }
-
-  get status(): string {
-    return this.$statusLabel.textContent || '';
-  }
-
-  set status(value: string) {
-    this.$statusLabel.textContent = value;
-  }
-
-  get onUpdate(): () => void {
-    return this.$updateButton.onclick as () => void;
-  }
-
-  set onUpdate(fn: () => void) {
-    this.$updateButton.onclick = fn;
+  async onUpdateClick(): Promise<void> {
+    await this.statusController.updateAction(
+      this.newStatusInput!.value
+    );
   }
 }

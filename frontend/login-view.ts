@@ -1,58 +1,79 @@
+import {LitElement, html, customElement, property} from 'lit-element';
+
 import '@vaadin/vaadin-login/vaadin-login-overlay.js';
 
+import client from './generated/connect-client.default';
+
+import {
+  Credentials,
+  CredentialsCallback
+} from '@vaadin/connect';
+
 /**
- * A login form with <vaadin-login-overlay>
+ * A login form view with <vaadin-login-overlay>
  */
-export class LoginView {
-  private $parentNode: Node;
-  private $vaadinLoginOverlay: any;
+@customElement('login-view')
+export class LoginViewElement extends LitElement {
+  @property({type: Boolean})
+  opened: boolean = false;
 
-  /**
-   * @param {Node} parentNode the DOM parent for the greeter view
-   */
-  constructor(parentNode: Node = document.body) {
-    this.$parentNode = parentNode;
-    this.$vaadinLoginOverlay = (parentNode.ownerDocument || document)
-      .createElement('vaadin-login-overlay') as any;
-    this.$vaadinLoginOverlay.i18n = {
-      header: {
-        title: 'Vaadin Connect starter',
-      },
-      form: {
-        title: 'Authenticate',
-        username: 'Username',
-        password: 'Password',
-        submit: 'Submit'
-      },
-      additionalInformation: '(type user / user to authenticate)'
+  @property({type: Boolean})
+  disabled: boolean = false;
+
+  @property({type: String})
+  errorMessage: string = '';
+
+  @property({type: Object})
+  i18n = {
+    header: {
+      title: 'Vaadin Connect starter',
+    },
+    form: {
+      title: 'Authenticate',
+      username: 'Username',
+      password: 'Password',
+      submit: 'Submit'
+    },
+    additionalInformation: '(type user / user to authenticate)'
+  };
+
+  createRenderRoot() {return this;}
+
+  render() {
+    return html`
+      <vaadin-login-overlay
+        .disabled="${this.disabled}"
+        .i18n="${this.i18n}"
+        .opened="${this.opened}"
+        .error="${Boolean(this.errorMessage)}"
+      ></vaadin-login-overlay>
+    `;
+  }
+
+  private credentialsCallback: CredentialsCallback =
+    async(options): Promise<Credentials> => {
+      this.errorMessage = (options && options.message) || '';
+      this.i18n = Object.assign({}, this.i18n, {errorMessage: {
+        title: 'Error',
+        message: this.errorMessage
+      }});
+      this.opened = true;
+      this.disabled = false;
+      return new Promise(resolve => {
+        this.addEventListener('login', ((e: CustomEvent) => {
+          this.errorMessage = '';
+          this.disabled = true;
+          const {username, password} = e.detail;
+          resolve({username, password, stayLoggedIn: true});
+        }) as EventListener, {once: true});
+      });
     };
-  }
 
-  get attached(): boolean {
-    return this.$vaadinLoginOverlay.opened;
-  }
-
-  set attached(value: boolean) {
-    if (value) {
-      this.$parentNode.appendChild(this.$vaadinLoginOverlay);
-      this.$vaadinLoginOverlay.opened = true;
-    } else {
-      this.$vaadinLoginOverlay.opened = false;
-      this.$parentNode.removeChild(this.$vaadinLoginOverlay);
+  async ensureLoggedIn(): Promise<void> {
+    client.credentials = this.credentialsCallback.bind(this);
+    while (!client.token) {
+      await client.login();
     }
-  }
-
-  get disabled(): boolean {
-    return this.$vaadinLoginOverlay.disabled;
-  }
-
-  set disabled(value: boolean) {
-    this.$vaadinLoginOverlay.disabled = value;
-  }
-
-  set afterNextLogin(callback: (detail: any) => void) {
-    this.$vaadinLoginOverlay.addEventListener('login', (e: CustomEvent) => {
-      callback(e.detail);
-    }, {once: true});
+    this.opened = false;
   }
 }
