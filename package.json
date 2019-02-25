@@ -32,6 +32,7 @@
     "@vaadin/vaadin-themable-mixin": "^1.4.1",
     "@webcomponents/webcomponentsjs": "^2.2.1",
     "abortcontroller-polyfill": "^1.2.1",
+    "lit-element": "^2.0.1",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
