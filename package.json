@@ -13,15 +13,12 @@
     "Base"
   ],
   "scripts": {
-    "build:frontend": "webpack",
-    "build": "./mvnw package",
-    "start:backend": "node scripts/start/backend.js",
-    "start:webpack": "webpack --mode development --progress --silent --info-verbosity none --watch",
-    "start:apibrowser": "node scripts/start/apibrowser.js",
-    "start": "npm --silent run start:backend -- -- npm --silent run start:apibrowser -- -- npm --silent run start:webpack",
-    "test:unit": "node $NODE_DEBUG_OPTION ./node_modules/.bin/intern environments=node functionalSuites=",
-    "test:e2e": "node $NODE_DEBUG_OPTION ./node_modules/.bin/intern",
-    "test": "npm run test:unit && npm run build:frontend && npm run start:backend -- --nowatch -- npm run test:e2e"
+    "build:frontend": "connect-scripts build:frontend",
+    "build": "connect-scripts build",
+    "start": "connect-scripts start",
+    "test": "connect-scripts test",
+    "test:e2e": "connect-scripts test:e2e",
+    "test:unit": "connect-scripts test:unit"
   },
   "dependencies": {
     "@ungap/url-search-params": "^0.1.2",
@@ -40,6 +37,7 @@
     "@babel/preset-env": "^7.2.3",
     "@types/sinon": "^7.0.6",
     "@types/sinon-chai": "^3.2.2",
+    "@vaadin/connect-scripts": "../vaadin-connect/frontend/connect-scripts",
     "awesome-typescript-loader": "^5.2.1",
     "babel-plugin-template-html-minifier": "^2.1.3",
     "copy-webpack-plugin": "^4.6.0",
