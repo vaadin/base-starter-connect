@@ -1,15 +1,18 @@
-const path = require('path');
+const {log, LogCategory} = require('@vaadin/connect-scripts/lib/log');
+
 const webpack = require('webpack');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 const {BabelMultiTargetPlugin} = require('webpack-babel-multi-target-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 
-const inputFolder = './frontend';
-// This folder is served as static in a spring-boot installation
-const outputFolder = './target/classes/META-INF/resources';
+const path = require('path');
 
-let first = true;
+const inputDir = './frontend';
+
+// This directory is served as static in a spring-boot installation
+const outputDir = './target/classes/META-INF/resources';
 
 module.exports = (env, argv) => {
   return {
@@ -21,7 +24,7 @@ module.exports = (env, argv) => {
     devtool: 'source-map',
 
     // The directory with the frontend sources
-    context: path.resolve(__dirname, inputFolder),
+    context: path.resolve(process.cwd(), inputDir),
 
     entry: {
       polyfills: './polyfills.ts',
@@ -58,6 +61,7 @@ module.exports = (env, argv) => {
             {
               loader: 'awesome-typescript-loader',
               options: {
+                silent: true,
                 useCache: true,
                 cacheDirectory: 'node_modules/.cache/awesome-typescript-loader',
               },
@@ -69,7 +73,7 @@ module.exports = (env, argv) => {
 
     output: {
       filename: '[name].js',
-      path: path.resolve(__dirname, outputFolder)
+      path: path.resolve(process.cwd(), outputDir)
     },
 
     performance: {
@@ -79,14 +83,20 @@ module.exports = (env, argv) => {
 
     plugins: [
 
-      // Copy static assets
-      new CopyWebpackPlugin(['**/*'], {context: path.resolve(__dirname, 'static')}),
-
-      // Copy @webcomponents/webcomponentsjs
-      new CopyWebpackPlugin(
-        ['webcomponentsjs/**/*'],
-        {context: path.resolve(__dirname, 'node_modules', '@webcomponents')}
-      ),
+      new CopyWebpackPlugin([
+        // Copy static assets
+        {
+          from: '**/*',
+          context: path.resolve('static')
+        },
+        // Copy @webcomponents/webcomponentsjs
+        {
+          from: 'webcomponentsjs/**/*',
+          context: path.resolve(require.resolve(
+            '@webcomponents/webcomponentsjs/package.json'
+          ), '../..')
+        }
+      ]),
 
       // Provide regeneratorRuntime for Babel async transforms
       new webpack.ProvidePlugin({
@@ -134,7 +144,7 @@ module.exports = (env, argv) => {
 
         // Target browsers with and without ES modules support
         targets: {
-          'es6': {
+          modern: {
             browsers: [
               'last 2 Chrome major versions',
               'last 2 ChromeAndroid major versions',
@@ -143,13 +153,15 @@ module.exports = (env, argv) => {
               'last 2 Safari major versions',
               'last 2 iOS major versions'
             ],
+            key: 'es6',
             tagAssetsWithKey: false, // don’t append a suffix to the file name
             esModule: true // marks the bundle used with <script type="module">
           },
-          'es5': {
+          legacy: {
             browsers: [
               'ie 11'
             ],
+            key: 'es5',
             tagAssetsWithKey: true, // append a suffix to the file name
             noModule: true // marks the bundle included without `type="module"`
           }
@@ -175,25 +187,44 @@ module.exports = (env, argv) => {
       }),
 
       // When Webpack finishes, show a message when in devmode
-      function () {
+      function() {
         if (argv.mode === 'development') {
+          let first = true;
+          // eslint-disable-next-line no-invalid-this
           this.hooks.done.tap('VaadinConnect', stats => {
-            const emoji = stats.hasErrors() ? '🚫 \x1b[31;1mThere are compilation errors in frontend code\x1b[0m 🚫' : '👍';
-            let msg;
-            if (first) {
-              first = false;
-              msg = `\n 🌀  \x1b[36mVaadin Connect\x1b[0m Webpack is watching for changes on ${inputFolder}\n`;
-              if (process.env.CONNECT_BACKEND) {
-                msg += `\n 🚀  \x1b[36mVaadin Connect\x1b[0m Application Ready at \x1b[32m${process.env.CONNECT_BACKEND}\x1b[0m ${emoji}\n`;
+            setTimeout(() => {
+              if (stats.hasErrors()) {
+                log(
+                  LogCategory.Error,
+                  'There are compilation errors in the frontend code'
+                );
+              } else {
+                if (first) {
+                  first = false;
+                  if (argv.watch) {
+                    log(
+                      LogCategory.Progress,
+                      `Webpack is watching or changes on ${inputDir}`
+                    );
+                  }
+                  if (process.env.CONNECT_BACKEND) {
+                    log(
+                      LogCategory.Success,
+                      'The application is ready at: \x1b[32m',
+                      process.env.CONNECT_BACKEND,
+                      '\x1b[0m 👍'
+                    );
+                  }
+                } else {
+                  log(LogCategory.Progress, 'Webpack has compiled the changes');
+                }
               }
-            } else {
-              msg = `\r 🚀  \x1b[36mVaadin Connect\x1b[0m Webpack has reloaded changes. ${emoji}`;
-            }
-            setTimeout(() => console.log(msg), 500);
+            });
           });
         }
       }
 
     ].filter(Boolean)
+
   };
 };
