@@ -11,7 +11,8 @@ export class StatusController {
     if (!newStatus) {
       this.setStatusCallback('Enter a new status first!');
     } else {
-      this.setStatusCallback(await statusService.update(newStatus));
+      const status = (await statusService.update(newStatus)) || '';
+      this.setStatusCallback(status);
     }
   }
 }
