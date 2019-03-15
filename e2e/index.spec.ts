@@ -25,25 +25,25 @@ describe('starter application', () => {
       });
 
       it('should show login view', async() => {
-        loginForm = page.findById('login');
+        loginForm = page.findByTagName('vaadin-login-form');
         await loginForm;
       });
 
       it('should authenticate', async() => {
         await page.execute(function() {
-          const loginForm = document.querySelector('#login');
+          const loginForm = document.querySelector('vaadin-login-form');
           if (!loginForm) {
             throw new Error('Error: missing login form');
           }
-          if (!loginForm.shadowRoot) {
-            throw new Error('Error: missing shadow root on the login form');
-          }
-          (loginForm.shadowRoot.querySelector('#username') as HTMLInputElement)
-            .value = 'user';
-          (loginForm.shadowRoot.querySelector('#password') as HTMLInputElement)
-            .value = 'user';
-          (loginForm.shadowRoot.querySelector('#submit') as HTMLButtonElement)
-            .click();
+          (loginForm.querySelector(
+            '[name="username"]'
+          ) as HTMLInputElement).value = 'user';
+          (loginForm.querySelector(
+            '[name="password"]'
+          ) as HTMLInputElement).value = 'user';
+          (loginForm.querySelector(
+            '[part="vaadin-login-submit"]'
+          ) as HTMLButtonElement).click();
         });
       });
     });
