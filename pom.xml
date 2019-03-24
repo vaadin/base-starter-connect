@@ -19,7 +19,7 @@
     </parent>
 
     <properties>
-        <vaadin.connect.version>0.9.3</vaadin.connect.version>
+        <vaadin.connect.version>0.9.4</vaadin.connect.version>
     </properties>
 
     <repositories>
