@@ -63,7 +63,7 @@
     "webpack-dev-server": "^3.2.1"
   },
   "author": "Vaadin Ltd",
-  "license": "Unlicense",
+  "license": "Unlicensed",
   "babel": {
     "presets": [
       [
