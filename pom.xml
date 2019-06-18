@@ -9,7 +9,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>Vaadin Connect Starter</name>
     <description>Vaadin Connect Starter</description>
-    <url>http://vaadin.com</url>
+    <url>https://vaadin.com</url>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -35,7 +35,7 @@
         <repository>
             <id>vaadin-prereleases</id>
             <url>
-                http://maven.vaadin.com/vaadin-prereleases/
+                https://maven.vaadin.com/vaadin-prereleases/
             </url>
             <snapshots>
                 <enabled>false</enabled>
@@ -64,7 +64,7 @@
         <pluginRepository>
             <id>vaadin-prereleases</id>
             <url>
-                http://maven.vaadin.com/vaadin-prereleases/
+                https://maven.vaadin.com/vaadin-prereleases/
             </url>
             <snapshots>
                 <enabled>false</enabled>
