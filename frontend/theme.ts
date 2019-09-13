@@ -32,3 +32,18 @@ export const {
   color,
   typography
 } = styles;
+
+
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<dom-module id="my-text-field-theme" theme-for="vaadin-text-field">
+  <template>
+    <style>
+      :host([theme~="no-animation"]) [part="error-message"] {
+        transition: none;
+      }
+    </style>
+  </template>
+</dom-module>`;
+
+document.head.appendChild($_documentContainer.content);
