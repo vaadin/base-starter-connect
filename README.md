@@ -1,3 +1,7 @@
+# This project has been archived
+
+Vaadin Connect is being integrated into [Vaadin Flow](https://github.com/vaadin/flow). You can build a project with [Vaadin Starter](https://vaadin.com/start).
+
 # Vaadin Connect starter
 
 This is the Vaadin Connect starter that can be used to simplify the new Vaadin Connect based project creation.
